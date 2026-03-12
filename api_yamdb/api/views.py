@@ -8,7 +8,8 @@ from api.serializers import (
     CommentSerializer,
     GenreSerializer,
     ReviewSerializer,
-    TitleSerializer,
+    TitleReadSerializer,
+    TitleWriteSerializer,
     UserSerializer,
 )
 from reviews.models import (
@@ -25,18 +26,35 @@ class User():
     pass
 
 
-class GenreViewSet():
+class CreateListDestroyViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    Базовый ViewSet:
+
+    -создание
+    -список
+    -удаление.
+    """
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name',)
+
+
+class GenreViewSet(CreateListDestroyViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
 
-class CategoryViewSet():
+class CategoryViewSet(CreateListDestroyViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    serializer_class = TitleSerializer
+    queryset = Title.objects.all()
     pagination_class = LimitOffsetPagination
     filter_backends = [
         filters.SearchFilter,
@@ -48,3 +66,8 @@ class TitleViewSet(viewsets.ModelViewSet):
         return Title.objects.annotate(
             rating=Avg('reviews__score')
         ).order_by('name')
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return TitleReadSerializer
+        return TitleWriteSerializer
