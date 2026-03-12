@@ -54,7 +54,6 @@ class CategoryViewSet(CreateListDestroyViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
     pagination_class = LimitOffsetPagination
     filter_backends = [
         filters.SearchFilter,
