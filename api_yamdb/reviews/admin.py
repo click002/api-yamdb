@@ -14,3 +14,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'author', 'review', 'pub_date')
     search_fields = ('text',)
     list_filter = ('pub_date',)
+from django.contrib.auth.admin import UserAdmin
+
+from .models import User
+
+admin.site.register(User, UserAdmin)
