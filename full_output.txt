@@ -1,0 +1,1114 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0 -- C:\Dev\project_api\api-yamdb\venv\Scripts\python.exe
+django: version: 5.1.1, settings: api_yamdb.settings (from ini)
+rootdir: C:\Dev\project_api\api-yamdb
+configfile: pytest.ini
+testpaths: tests/
+plugins: django-4.9.0, pythonpath-0.7.3
+collecting ... collected 80 items
+
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_nodata_signup Operations to perform:
+  Synchronize unmigrated apps: messages, rest_framework, rest_framework_simplejwt, staticfiles
+  Apply all migrations: admin, auth, contenttypes, reviews, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying reviews.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying reviews.0002_title_rating... OK
+  Applying sessions.0001_initial... OK
+PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_invalid_data_signup PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_singup_length_and_simbols_validation[data0-messege0] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_singup_length_and_simbols_validation[data1-messege1] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_singup_length_and_simbols_validation[data2-messege2] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_valid_data_user_signup PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_valid_data_admin_create_user PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_admin_create_user_length_and_simbols_validation[data0-messege0] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_admin_create_user_length_and_simbols_validation[data1-messege1] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_admin_create_user_length_and_simbols_validation[data2-messege2] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_admin_create_user_length_and_simbols_validation[data3-messege3] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_admin_create_user_length_and_simbols_validation[data4-messege4] PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_obtain_jwt_token_invalid_data PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_registration_me_username_restricted PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_00_registration_same_email_restricted PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_get_new_confirmation_code_for_existing_user PASSED
+tests/test_00_user_registration.py::Test00UserRegistration::test_get_confirmation_code_for_user_created_by_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_01_users_not_authenticated PASSED
+tests/test_01_users.py::Test01UserAPI::test_02_users_username_not_authenticated PASSED
+tests/test_01_users.py::Test01UserAPI::test_03_users_me_not_authenticated PASSED
+tests/test_01_users.py::Test01UserAPI::test_04_users_get_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_04_02_users_get_search PASSED
+tests/test_01_users.py::Test01UserAPI::test_04_01_users_get_admin_only PASSED
+tests/test_01_users.py::Test01UserAPI::test_05_01_users_post_admin_bad_requests PASSED
+tests/test_01_users.py::Test01UserAPI::test_05_02_users_post_admin_user_creation[data0-] PASSED
+tests/test_01_users.py::Test01UserAPI::test_05_02_users_post_admin_user_creation[data1-без указания роли нового пользователя ] PASSED
+tests/test_01_users.py::Test01UserAPI::test_05_03_users_post_response_has_data PASSED
+tests/test_01_users.py::Test01UserAPI::test_05_04_users_post_user_superuser PASSED
+tests/test_01_users.py::Test01UserAPI::test_06_users_username_get_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_06_users_username_get_not_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_07_01_users_username_patch_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_07_02_users_username_patch_moderator PASSED
+tests/test_01_users.py::Test01UserAPI::test_07_03_users_username_patch_user PASSED
+tests/test_01_users.py::Test01UserAPI::test_07_05_users_username_put_not_allowed PASSED
+tests/test_01_users.py::Test01UserAPI::test_08_01_users_username_delete_admin PASSED
+tests/test_01_users.py::Test01UserAPI::test_08_02_users_username_delete_moderator PASSED
+tests/test_01_users.py::Test01UserAPI::test_08_03_users_username_delete_user PASSED
+tests/test_01_users.py::Test01UserAPI::test_08_04_users_username_delete_superuser PASSED
+tests/test_01_users.py::Test01UserAPI::test_09_users_me_get PASSED
+tests/test_01_users.py::Test01UserAPI::test_09_02_users_me_delete_not_allowed PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_01_users_me_patch PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_02_users_me_has_field_validation[data0-messege0] PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_02_users_me_has_field_validation[data1-messege1] PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_02_users_me_has_field_validation[data2-messege2] PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_02_users_me_has_field_validation[data3-messege3] PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_02_users_me_has_field_validation[data4-messege4] PASSED
+tests/test_01_users.py::Test01UserAPI::test_10_03_users_me_patch_change_role_not_allowed PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_02_category_with_admin_user PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_03_category_fields_validation[data0-massage0] PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_03_category_fields_validation[data1-massage1] PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_03_category_fields_validation[data2-massage2] PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_04_category_delete_admin PASSED
+tests/test_02_category.py::Test02CategoryAPI::test_05_category_check_permission_admin PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_02_genre PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_03_category_fields_validation[data0-massage0] PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_03_category_fields_validation[data1-massage1] PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_03_category_fields_validation[data2-massage2] PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_04_genres_delete PASSED
+tests/test_03_genre.py::Test03GenreAPI::test_05_genres_check_permission PASSED
+tests/test_04_title.py::Test04TitleAPI::test_01_title_not_auth FAILED
+tests/test_04_title.py::Test04TitleAPI::test_02_title_admin FAILED
+tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail FAILED
+tests/test_04_title.py::Test04TitleAPI::test_04_titles_name_length_validation FAILED
+tests/test_04_title.py::Test04TitleAPI::test_05_titles_check_permission PASSED
+tests/test_04_title.py::Test04TitleAPI::test_06_titles_detail_put_not_allowed PASSED
+tests/test_05_review.py::Test05ReviewAPI::test_01_review_not_auth PASSED
+tests/test_05_review.py::Test05ReviewAPI::test_02_review_post FAILED
+tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail_get PASSED
+tests/test_05_review.py::Test05ReviewAPI::test_04_review_detail_user PASSED
+tests/test_05_review.py::Test05ReviewAPI::test_05_reviews_detail_moderator_and_admin PASSED
+tests/test_05_review.py::Test05ReviewAPI::test_06_reviews_detail_put_not_allowed FAILED
+tests/test_06_comment.py::Test06CommentAPI::test_01_comment_not_auth PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_02_comment PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_03_comment_detail_get PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_04_comment_detail__user_patch_delete PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_05_comment_detail_admin_and_moderator PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_06_comment_detail_not_auth PASSED
+tests/test_06_comment.py::Test06CommentAPI::test_07_comment_detail_put_not_allowed FAILED
+
+================================== FAILURES ===================================
+____________________ Test04TitleAPI.test_01_title_not_auth ____________________
+
+self = <tests.test_04_title.Test04TitleAPI object at 0x000001FEAC579A90>
+client = <django.test.client.Client object at 0x000001FEACF30770>
+
+    def test_01_title_not_auth(self, client):
+>       response = client.get(self.TITLES_URL)
+
+tests\test_04_title.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\django\test\client.py:1129: in get
+    response = super().get(
+venv\Lib\site-packages\django\test\client.py:479: in get
+    return self.generic(
+venv\Lib\site-packages\django\test\client.py:676: in generic
+    return self.request(**r)
+venv\Lib\site-packages\django\test\client.py:1092: in request
+    self.check_exception(response)
+venv\Lib\site-packages\django\test\client.py:805: in check_exception
+    raise exc_value
+venv\Lib\site-packages\django\core\handlers\exception.py:55: in inner
+    response = get_response(request)
+venv\Lib\site-packages\django\core\handlers\base.py:197: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\Lib\site-packages\django\views\decorators\csrf.py:65: in _view_wrapper
+    return view_func(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\viewsets.py:124: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\Lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:38: in list
+    queryset = self.filter_queryset(self.get_queryset())
+api_yamdb\api\views.py:286: in get_queryset
+    return Title.objects.annotate(
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:1630: in annotate
+    return self._annotate(args, kwargs, select=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <QuerySet []>, args = (), kwargs = {'rating': Avg(F(reviews__score))}
+select = True
+
+    def _annotate(self, args, kwargs, select=True):
+        self._validate_values_are_expressions(
+            args + tuple(kwargs.values()), method_name="annotate"
+        )
+        annotations = {}
+        for arg in args:
+            # The default_alias property may raise a TypeError.
+            try:
+                if arg.default_alias in kwargs:
+                    raise ValueError(
+                        "The named annotation '%s' conflicts with the "
+                        "default name for another annotation." % arg.default_alias
+                    )
+            except TypeError:
+                raise TypeError("Complex annotations require an alias")
+            annotations[arg.default_alias] = arg
+        annotations.update(kwargs)
+    
+        clone = self._chain()
+        names = self._fields
+        if names is None:
+            names = set(
+                chain.from_iterable(
+                    (
+                        (field.name, field.attname)
+                        if hasattr(field, "attname")
+                        else (field.name,)
+                    )
+                    for field in self.model._meta.get_fields()
+                )
+            )
+    
+        for alias, annotation in annotations.items():
+            if alias in names:
+>               raise ValueError(
+                    "The annotation '%s' conflicts with a field on "
+                    "the model." % alias
+                )
+E               ValueError: The annotation 'rating' conflicts with a field on the model.
+
+venv\Lib\site-packages\django\db\models\query.py:1673: ValueError
+------------------------------ Captured log call ------------------------------
+ERROR    django.request:log.py:248 Internal Server Error: /api/v1/titles/
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\api_yamdb\api\views.py", line 286, in get_queryset
+    return Title.objects.annotate(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1630, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1673, in _annotate
+    raise ValueError(
+ValueError: The annotation 'rating' conflicts with a field on the model.
+_____________________ Test04TitleAPI.test_02_title_admin ______________________
+
+self = <tests.test_04_title.Test04TitleAPI object at 0x000001FEAC57A090>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEACF19340>
+client = <django.test.client.Client object at 0x000001FEACF190D0>
+
+    def test_02_title_admin(self, admin_client, client):
+        genres = create_genre(admin_client)
+        categories = create_categories(admin_client)
+        title_count = 0
+    
+        assert_msg = (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит некорректные данные - должен вернуться ответ со '
+            'статусом 400.'
+        )
+        data = {}
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, assert_msg
+    
+        invalid_data = {
+            'name': 'Угнать за 60 секунд',
+            'year': 'дветыщи',
+            'genre': [genres[1]['slug']],
+            'category': categories[1]['slug'],
+            'description': 'Угонял машины всю ночь и немного подустал.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=invalid_data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, assert_msg
+    
+        post_data_1 = {
+            'name': 'Мост через реку Квай',
+            'year': 1957,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Рон Свонсон рекомендует.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=post_data_1)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        title_count += 1
+    
+        post_data_2 = {
+            'name': 'Хороший, плохой, злой.',
+            'year': 1966,
+            'genre': [genres[2]['slug']],
+            'category': categories[1]['slug'],
+            'description': 'Угадай ревьюера по названию фильма.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=post_data_2)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        title_count += 1
+        assert isinstance(response.json().get('id'), int), (
+            'Проверьте, при POST-запросе администратора к '
+            f'`{self.TITLES_URL}` в ответе возвращаются данные созданного '
+            'объекта. Сейчас поле `id` отсутствует или не является целым '
+            'числом.'
+        )
+    
+>       response = client.get(self.TITLES_URL)
+
+tests\test_04_title.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\django\test\client.py:1129: in get
+    response = super().get(
+venv\Lib\site-packages\django\test\client.py:479: in get
+    return self.generic(
+venv\Lib\site-packages\django\test\client.py:676: in generic
+    return self.request(**r)
+venv\Lib\site-packages\django\test\client.py:1092: in request
+    self.check_exception(response)
+venv\Lib\site-packages\django\test\client.py:805: in check_exception
+    raise exc_value
+venv\Lib\site-packages\django\core\handlers\exception.py:55: in inner
+    response = get_response(request)
+venv\Lib\site-packages\django\core\handlers\base.py:197: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\Lib\site-packages\django\views\decorators\csrf.py:65: in _view_wrapper
+    return view_func(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\viewsets.py:124: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\Lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:38: in list
+    queryset = self.filter_queryset(self.get_queryset())
+api_yamdb\api\views.py:286: in get_queryset
+    return Title.objects.annotate(
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:1630: in annotate
+    return self._annotate(args, kwargs, select=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <QuerySet [<Title: Мост через реку Квай>, <Title: Хороший, плохой, злой.>]>
+args = (), kwargs = {'rating': Avg(F(reviews__score))}, select = True
+
+    def _annotate(self, args, kwargs, select=True):
+        self._validate_values_are_expressions(
+            args + tuple(kwargs.values()), method_name="annotate"
+        )
+        annotations = {}
+        for arg in args:
+            # The default_alias property may raise a TypeError.
+            try:
+                if arg.default_alias in kwargs:
+                    raise ValueError(
+                        "The named annotation '%s' conflicts with the "
+                        "default name for another annotation." % arg.default_alias
+                    )
+            except TypeError:
+                raise TypeError("Complex annotations require an alias")
+            annotations[arg.default_alias] = arg
+        annotations.update(kwargs)
+    
+        clone = self._chain()
+        names = self._fields
+        if names is None:
+            names = set(
+                chain.from_iterable(
+                    (
+                        (field.name, field.attname)
+                        if hasattr(field, "attname")
+                        else (field.name,)
+                    )
+                    for field in self.model._meta.get_fields()
+                )
+            )
+    
+        for alias, annotation in annotations.items():
+            if alias in names:
+>               raise ValueError(
+                    "The annotation '%s' conflicts with a field on "
+                    "the model." % alias
+                )
+E               ValueError: The annotation 'rating' conflicts with a field on the model.
+
+venv\Lib\site-packages\django\db\models\query.py:1673: ValueError
+------------------------------ Captured log call ------------------------------
+WARNING  django.request:log.py:248 Bad Request: /api/v1/titles/
+WARNING  django.request:log.py:248 Bad Request: /api/v1/titles/
+ERROR    django.request:log.py:248 Internal Server Error: /api/v1/titles/
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\api_yamdb\api\views.py", line 286, in get_queryset
+    return Title.objects.annotate(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1630, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1673, in _annotate
+    raise ValueError(
+ValueError: The annotation 'rating' conflicts with a field on the model.
+____________________ Test04TitleAPI.test_03_titles_detail _____________________
+
+self = <tests.test_04_title.Test04TitleAPI object at 0x000001FEAC57A690>
+client = <django.test.client.Client object at 0x000001FEAC5FFBC0>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEAC5FF2F0>
+
+    def test_03_titles_detail(self, client, admin_client):
+        titles, categories, _ = create_titles(admin_client)
+>       response = client.get(
+            self.TITLES_DETAIL_URL_TEMPLATE.format(title_id=titles[0]['id'])
+        )
+
+tests\test_04_title.py:196: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\django\test\client.py:1129: in get
+    response = super().get(
+venv\Lib\site-packages\django\test\client.py:479: in get
+    return self.generic(
+venv\Lib\site-packages\django\test\client.py:676: in generic
+    return self.request(**r)
+venv\Lib\site-packages\django\test\client.py:1092: in request
+    self.check_exception(response)
+venv\Lib\site-packages\django\test\client.py:805: in check_exception
+    raise exc_value
+venv\Lib\site-packages\django\core\handlers\exception.py:55: in inner
+    response = get_response(request)
+venv\Lib\site-packages\django\core\handlers\base.py:197: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\Lib\site-packages\django\views\decorators\csrf.py:65: in _view_wrapper
+    return view_func(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\viewsets.py:124: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\Lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:54: in retrieve
+    instance = self.get_object()
+venv\Lib\site-packages\rest_framework\generics.py:87: in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+api_yamdb\api\views.py:286: in get_queryset
+    return Title.objects.annotate(
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:1630: in annotate
+    return self._annotate(args, kwargs, select=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <QuerySet [<Title: Крепкий орешек>, <Title: Терминатор>]>, args = ()
+kwargs = {'rating': Avg(F(reviews__score))}, select = True
+
+    def _annotate(self, args, kwargs, select=True):
+        self._validate_values_are_expressions(
+            args + tuple(kwargs.values()), method_name="annotate"
+        )
+        annotations = {}
+        for arg in args:
+            # The default_alias property may raise a TypeError.
+            try:
+                if arg.default_alias in kwargs:
+                    raise ValueError(
+                        "The named annotation '%s' conflicts with the "
+                        "default name for another annotation." % arg.default_alias
+                    )
+            except TypeError:
+                raise TypeError("Complex annotations require an alias")
+            annotations[arg.default_alias] = arg
+        annotations.update(kwargs)
+    
+        clone = self._chain()
+        names = self._fields
+        if names is None:
+            names = set(
+                chain.from_iterable(
+                    (
+                        (field.name, field.attname)
+                        if hasattr(field, "attname")
+                        else (field.name,)
+                    )
+                    for field in self.model._meta.get_fields()
+                )
+            )
+    
+        for alias, annotation in annotations.items():
+            if alias in names:
+>               raise ValueError(
+                    "The annotation '%s' conflicts with a field on "
+                    "the model." % alias
+                )
+E               ValueError: The annotation 'rating' conflicts with a field on the model.
+
+venv\Lib\site-packages\django\db\models\query.py:1673: ValueError
+------------------------------ Captured log call ------------------------------
+ERROR    django.request:log.py:248 Internal Server Error: /api/v1/titles/3/
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 54, in retrieve
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\generics.py", line 87, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\api_yamdb\api\views.py", line 286, in get_queryset
+    return Title.objects.annotate(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1630, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1673, in _annotate
+    raise ValueError(
+ValueError: The annotation 'rating' conflicts with a field on the model.
+____________ Test04TitleAPI.test_04_titles_name_length_validation _____________
+
+self = <tests.test_04_title.Test04TitleAPI object at 0x000001FEAC578860>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEAC8B08C0>
+
+    def test_04_titles_name_length_validation(self, admin_client):
+        genres = create_genre(admin_client)
+        categories = create_categories(admin_client)
+    
+        data = {
+            'name': 'It`s Over 9000!' + '!' * 242,
+            'year': 1989,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Dragon Ball Z'
+        }
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Убедитесь, что при обработке POST-запроса администратора к '
+            f'`{self.TITLES_URL}` проверяется длина поля `name`: название '
+            'произведения не может быть длиннее 256 символов.'
+        )
+    
+        data = {
+            'name': 'Мост через реку Квай',
+            'year': 1957,
+            'genre': [genres[0]['slug'], genres[1]['slug']],
+            'category': categories[0]['slug'],
+            'description': 'Рон Свонсон рекомендует.'
+        }
+        response = admin_client.post(self.TITLES_URL, data=data)
+        assert response.status_code == HTTPStatus.CREATED, (
+            f'Если POST-запрос администратора к `{self.TITLES_URL}` '
+            'содержит корректные данные - должен вернуться ответ со статусом '
+            '201.'
+        )
+        idx = response.json().get('id')
+        assert idx, (
+            'Проверьте, что ответ на успешный POST-запрос к '
+            f'`{self.TITLES_URL}` содержит `id` созданного произведения.'
+        )
+    
+>       response = admin_client.patch(
+            self.TITLES_DETAIL_URL_TEMPLATE.format(title_id=idx),
+            data={'name': ('longname' + 'e' * 249)}
+        )
+
+tests\test_04_title.py:313: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\rest_framework\test.py:311: in patch
+    response = super().patch(
+venv\Lib\site-packages\rest_framework\test.py:217: in patch
+    return self.generic('PATCH', path, data, content_type, **extra)
+venv\Lib\site-packages\rest_framework\test.py:233: in generic
+    return super().generic(
+venv\Lib\site-packages\django\test\client.py:676: in generic
+    return self.request(**r)
+venv\Lib\site-packages\rest_framework\test.py:285: in request
+    return super().request(**kwargs)
+venv\Lib\site-packages\rest_framework\test.py:237: in request
+    request = super().request(**kwargs)
+venv\Lib\site-packages\django\test\client.py:1092: in request
+    self.check_exception(response)
+venv\Lib\site-packages\django\test\client.py:805: in check_exception
+    raise exc_value
+venv\Lib\site-packages\django\core\handlers\exception.py:55: in inner
+    response = get_response(request)
+venv\Lib\site-packages\django\core\handlers\base.py:197: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\Lib\site-packages\django\views\decorators\csrf.py:65: in _view_wrapper
+    return view_func(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\viewsets.py:124: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\Lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:82: in partial_update
+    return self.update(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:65: in update
+    instance = self.get_object()
+venv\Lib\site-packages\rest_framework\generics.py:87: in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+api_yamdb\api\views.py:286: in get_queryset
+    return Title.objects.annotate(
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:1630: in annotate
+    return self._annotate(args, kwargs, select=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <QuerySet [<Title: Мост через реку Квай>]>, args = ()
+kwargs = {'rating': Avg(F(reviews__score))}, select = True
+
+    def _annotate(self, args, kwargs, select=True):
+        self._validate_values_are_expressions(
+            args + tuple(kwargs.values()), method_name="annotate"
+        )
+        annotations = {}
+        for arg in args:
+            # The default_alias property may raise a TypeError.
+            try:
+                if arg.default_alias in kwargs:
+                    raise ValueError(
+                        "The named annotation '%s' conflicts with the "
+                        "default name for another annotation." % arg.default_alias
+                    )
+            except TypeError:
+                raise TypeError("Complex annotations require an alias")
+            annotations[arg.default_alias] = arg
+        annotations.update(kwargs)
+    
+        clone = self._chain()
+        names = self._fields
+        if names is None:
+            names = set(
+                chain.from_iterable(
+                    (
+                        (field.name, field.attname)
+                        if hasattr(field, "attname")
+                        else (field.name,)
+                    )
+                    for field in self.model._meta.get_fields()
+                )
+            )
+    
+        for alias, annotation in annotations.items():
+            if alias in names:
+>               raise ValueError(
+                    "The annotation '%s' conflicts with a field on "
+                    "the model." % alias
+                )
+E               ValueError: The annotation 'rating' conflicts with a field on the model.
+
+venv\Lib\site-packages\django\db\models\query.py:1673: ValueError
+------------------------------ Captured log call ------------------------------
+WARNING  django.request:log.py:248 Bad Request: /api/v1/titles/
+ERROR    django.request:log.py:248 Internal Server Error: /api/v1/titles/5/
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 82, in partial_update
+    return self.update(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 65, in update
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\generics.py", line 87, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\api_yamdb\api\views.py", line 286, in get_queryset
+    return Title.objects.annotate(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1630, in annotate
+    return self._annotate(args, kwargs, select=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1673, in _annotate
+    raise ValueError(
+ValueError: The annotation 'rating' conflicts with a field on the model.
+_____________________ Test05ReviewAPI.test_02_review_post _____________________
+
+self = <django.db.backends.utils.CursorWrapper object at 0x000001FEACF31280>
+sql = 'INSERT INTO "reviews_review" ("title_id", "author_id", "text", "score", "pub_date") VALUES (%s, %s, %s, %s, %s) RETURNING "reviews_review"."id"'
+params = (12, 86, 'Шляпа', 1, '2026-03-13 18:54:55.599613')
+ignored_wrapper_args = (False, {'connection': <DatabaseWrapper vendor='sqlite' alias='default'>, 'cursor': <django.db.backends.utils.CursorWrapper object at 0x000001FEACF31280>})
+
+    def _execute(self, sql, params, *ignored_wrapper_args):
+        # Raise a warning during app initialization (stored_app_configs is only
+        # ever set during testing).
+        if not apps.ready and not apps.stored_app_configs:
+            warnings.warn(self.APPS_NOT_READY_WARNING_MSG, category=RuntimeWarning)
+        self.db.validate_no_broken_transaction()
+        with self.db.wrap_database_errors:
+            if params is None:
+                # params default might be backend specific.
+                return self.cursor.execute(sql)
+            else:
+>               return self.cursor.execute(sql, params)
+
+venv\Lib\site-packages\django\db\backends\utils.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <django.db.backends.sqlite3.base.SQLiteCursorWrapper object at 0x000001FEACFEAC30>
+query = 'INSERT INTO "reviews_review" ("title_id", "author_id", "text", "score", "pub_date") VALUES (?, ?, ?, ?, ?) RETURNING "reviews_review"."id"'
+params = (12, 86, 'Шляпа', 1, '2026-03-13 18:54:55.599613')
+
+    def execute(self, query, params=None):
+        if params is None:
+            return super().execute(query)
+        # Extract names if params is a mapping, i.e. "pyformat" style is used.
+        param_names = list(params) if isinstance(params, Mapping) else None
+        query = self.convert_query(query, param_names=param_names)
+>       return super().execute(query, params)
+E       sqlite3.IntegrityError: UNIQUE constraint failed: reviews_review.title_id, reviews_review.author_id
+
+venv\Lib\site-packages\django\db\backends\sqlite3\base.py:354: IntegrityError
+
+The above exception was the direct cause of the following exception:
+
+self = <tests.test_05_review.Test05ReviewAPI object at 0x000001FEAC5A09B0>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEAD01FE90>
+user_client = <rest_framework.test.APIClient object at 0x000001FEAD01F290>
+moderator_client = <rest_framework.test.APIClient object at 0x000001FEAD01DD60>
+admin = <User: TestAdmin>
+
+    def test_02_review_post(self, admin_client, user_client,
+                            moderator_client, admin):
+        titles, _, _ = create_titles(admin_client)
+        title_0_reviews_count = 0
+        first_title_reviews_url = self.REVIEWS_URL_TEMPLATE.format(
+            title_id=titles[0]['id']
+        )
+        second_title_reviews_url = self.REVIEWS_URL_TEMPLATE.format(
+            title_id=titles[1]['id']
+        )
+    
+        data = {}
+        response = user_client.post(first_title_reviews_url, data=data)
+        assert response.status_code == HTTPStatus.BAD_REQUEST, (
+            'Если POST-запрос авторизованного пользователя к '
+            f'`{self.REVIEWS_URL_TEMPLATE}` содержит некорректные данные - '
+            'должен вернуться ответ со статусом 400.'
+        )
+    
+        post_data = {
+            'text': 'Неочень',
+            'score': 5
+        }
+        create_single_review(
+            admin_client,
+            titles[0]['id'],
+            post_data['text'],
+            post_data['score']
+        )
+        title_0_reviews_count += 1
+    
+        data = {
+            'text': 'Шляпа',
+            'score': 1
+        }
+>       response = admin_client.post(first_title_reviews_url, data=data)
+
+tests\test_05_review.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\rest_framework\test.py:295: in post
+    response = super().post(
+venv\Lib\site-packages\rest_framework\test.py:209: in post
+    return self.generic('POST', path, data, content_type, **extra)
+venv\Lib\site-packages\rest_framework\test.py:233: in generic
+    return super().generic(
+venv\Lib\site-packages\django\test\client.py:676: in generic
+    return self.request(**r)
+venv\Lib\site-packages\rest_framework\test.py:285: in request
+    return super().request(**kwargs)
+venv\Lib\site-packages\rest_framework\test.py:237: in request
+    request = super().request(**kwargs)
+venv\Lib\site-packages\django\test\client.py:1092: in request
+    self.check_exception(response)
+venv\Lib\site-packages\django\test\client.py:805: in check_exception
+    raise exc_value
+venv\Lib\site-packages\django\core\handlers\exception.py:55: in inner
+    response = get_response(request)
+venv\Lib\site-packages\django\core\handlers\base.py:197: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv\Lib\site-packages\django\views\decorators\csrf.py:65: in _view_wrapper
+    return view_func(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\viewsets.py:124: in view
+    return self.dispatch(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv\Lib\site-packages\rest_framework\views.py:480: in raise_uncaught_exception
+    raise exc
+venv\Lib\site-packages\rest_framework\views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv\Lib\site-packages\rest_framework\mixins.py:19: in create
+    self.perform_create(serializer)
+api_yamdb\api\views.py:312: in perform_create
+    serializer.save(author=self.request.user, title=title)
+venv\Lib\site-packages\rest_framework\serializers.py:208: in save
+    self.instance = self.create(validated_data)
+venv\Lib\site-packages\rest_framework\serializers.py:989: in create
+    instance = ModelClass._default_manager.create(**validated_data)
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:679: in create
+    obj.save(force_insert=True, using=self.db)
+venv\Lib\site-packages\django\db\models\base.py:891: in save
+    self.save_base(
+venv\Lib\site-packages\django\db\models\base.py:997: in save_base
+    updated = self._save_table(
+venv\Lib\site-packages\django\db\models\base.py:1160: in _save_table
+    results = self._do_insert(
+venv\Lib\site-packages\django\db\models\base.py:1201: in _do_insert
+    return manager._insert(
+venv\Lib\site-packages\django\db\models\manager.py:87: in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+venv\Lib\site-packages\django\db\models\query.py:1847: in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+venv\Lib\site-packages\django\db\models\sql\compiler.py:1836: in execute_sql
+    cursor.execute(sql, params)
+venv\Lib\site-packages\django\db\backends\utils.py:79: in execute
+    return self._execute_with_wrappers(
+venv\Lib\site-packages\django\db\backends\utils.py:92: in _execute_with_wrappers
+    return executor(sql, params, many, context)
+venv\Lib\site-packages\django\db\backends\utils.py:100: in _execute
+    with self.db.wrap_database_errors:
+venv\Lib\site-packages\django\db\utils.py:91: in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+venv\Lib\site-packages\django\db\backends\utils.py:105: in _execute
+    return self.cursor.execute(sql, params)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <django.db.backends.sqlite3.base.SQLiteCursorWrapper object at 0x000001FEACFEAC30>
+query = 'INSERT INTO "reviews_review" ("title_id", "author_id", "text", "score", "pub_date") VALUES (?, ?, ?, ?, ?) RETURNING "reviews_review"."id"'
+params = (12, 86, 'Шляпа', 1, '2026-03-13 18:54:55.599613')
+
+    def execute(self, query, params=None):
+        if params is None:
+            return super().execute(query)
+        # Extract names if params is a mapping, i.e. "pyformat" style is used.
+        param_names = list(params) if isinstance(params, Mapping) else None
+        query = self.convert_query(query, param_names=param_names)
+>       return super().execute(query, params)
+E       django.db.utils.IntegrityError: UNIQUE constraint failed: reviews_review.title_id, reviews_review.author_id
+
+venv\Lib\site-packages\django\db\backends\sqlite3\base.py:354: IntegrityError
+------------------------------ Captured log call ------------------------------
+WARNING  django.request:log.py:248 Bad Request: /api/v1/titles/12/reviews/
+ERROR    django.request:log.py:248 Internal Server Error: /api/v1/titles/12/reviews/
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: reviews_review.title_id, reviews_review.author_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "C:\Dev\project_api\api-yamdb\api_yamdb\api\views.py", line 312, in perform_create
+    serializer.save(author=self.request.user, title=title)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\base.py", line 891, in save
+    self.save_base(
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\base.py", line 997, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\base.py", line 1160, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\base.py", line 1201, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Dev\project_api\api-yamdb\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 354, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: reviews_review.title_id, reviews_review.author_id
+___________ Test05ReviewAPI.test_06_reviews_detail_put_not_allowed ____________
+
+self = <tests.test_05_review.Test05ReviewAPI object at 0x000001FEAC5A25A0>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEAD031CD0>
+admin = <User: TestAdmin>
+user_client = <rest_framework.test.APIClient object at 0x000001FEAD033770>
+user = <User: TestUser>
+moderator_client = <rest_framework.test.APIClient object at 0x000001FEAC6CCCE0>
+moderator = <User: TestModerator>
+
+    def test_06_reviews_detail_put_not_allowed(
+            self, admin_client, admin, user_client, user, moderator_client,
+            moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+        reviews, titles = create_reviews(admin_client, author_map)
+        review = reviews[0]
+        review['text'] = 'Новвый текст отзыва.'
+        response = admin_client.put(
+            self.REVIEW_DETAIL_URL_TEMPLATE.format(
+                title_id=titles[0]['id'], review_id=reviews[0]['id']
+            ),
+            data=review
+        )
+>       assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED, (
+            f'Проверьте, что PUT-запрос к `{self.REVIEW_DETAIL_URL_TEMPLATE} '
+            'не предусмотрен и возвращает статус 405.'
+        )
+E       AssertionError: Проверьте, что PUT-запрос к `/api/v1/titles/{title_id}/reviews/{review_id}/ не предусмотрен и возвращает статус 405.
+E       assert 200 == <HTTPStatus.METHOD_NOT_ALLOWED: 405>
+E        +  where 200 = <Response status_code=200, "application/json">.status_code
+E        +  and   <HTTPStatus.METHOD_NOT_ALLOWED: 405> = HTTPStatus.METHOD_NOT_ALLOWED
+
+tests\test_05_review.py:410: AssertionError
+___________ Test06CommentAPI.test_07_comment_detail_put_not_allowed ___________
+
+self = <tests.test_06_comment.Test06CommentAPI object at 0x000001FEAC5AD700>
+admin_client = <rest_framework.test.APIClient object at 0x000001FEAC638050>
+admin = <User: TestAdmin>
+user_client = <rest_framework.test.APIClient object at 0x000001FEAC63A570>
+user = <User: TestUser>
+moderator_client = <rest_framework.test.APIClient object at 0x000001FEAC65EE40>
+moderator = <User: TestModerator>
+
+    def test_07_comment_detail_put_not_allowed(
+            self, admin_client, admin, user_client, user, moderator_client,
+            moderator):
+        author_map = {
+            admin: admin_client,
+            user: user_client,
+            moderator: moderator_client
+        }
+        comments, reviews, titles = create_comments(admin_client, author_map)
+        comment = comments[0]
+        comment['text'] = 'Новвый текст комментария.'
+        response = admin_client.put(
+            self.COMMENT_DETAIL_URL_TEMPLATE.format(
+                title_id=titles[0]['id'],
+                review_id=reviews[0]['id'],
+                comment_id=comments[0]['id']
+            ),
+            data=comment
+        )
+>       assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED, (
+            f'Проверьте, что PUT-запрос к `{self.COMMENT_DETAIL_URL_TEMPLATE} '
+            'не предусмотрен и возвращает статус 405.'
+        )
+E       AssertionError: Проверьте, что PUT-запрос к `/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/ не предусмотрен и возвращает статус 405.
+E       assert 200 == <HTTPStatus.METHOD_NOT_ALLOWED: 405>
+E        +  where 200 = <Response status_code=200, "application/json">.status_code
+E        +  and   <HTTPStatus.METHOD_NOT_ALLOWED: 405> = HTTPStatus.METHOD_NOT_ALLOWED
+
+tests\test_06_comment.py:365: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_04_title.py::Test04TitleAPI::test_01_title_not_auth - ValueError: The annotation 'rating' conflicts with a field on the model.
+FAILED tests/test_04_title.py::Test04TitleAPI::test_02_title_admin - ValueError: The annotation 'rating' conflicts with a field on the model.
+FAILED tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail - ValueError: The annotation 'rating' conflicts with a field on the model.
+FAILED tests/test_04_title.py::Test04TitleAPI::test_04_titles_name_length_validation - ValueError: The annotation 'rating' conflicts with a field on the model.
+FAILED tests/test_05_review.py::Test05ReviewAPI::test_02_review_post - django.db.utils.IntegrityError: UNIQUE constraint failed: reviews_review.title_id, reviews_review.author_id
+FAILED tests/test_05_review.py::Test05ReviewAPI::test_06_reviews_detail_put_not_allowed - AssertionError: Проверьте, что PUT-запрос к `/api/v1/titles/{title_id}/reviews/{review_id}/ не предусмотрен и возвращает статус 405.
+assert 200 == <HTTPStatus.METHOD_NOT_ALLOWED: 405>
+ +  where 200 = <Response status_code=200, "application/json">.status_code
+ +  and   <HTTPStatus.METHOD_NOT_ALLOWED: 405> = HTTPStatus.METHOD_NOT_ALLOWED
+FAILED tests/test_06_comment.py::Test06CommentAPI::test_07_comment_detail_put_not_allowed - AssertionError: Проверьте, что PUT-запрос к `/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/ не предусмотрен и возвращает статус 405.
+assert 200 == <HTTPStatus.METHOD_NOT_ALLOWED: 405>
+ +  where 200 = <Response status_code=200, "application/json">.status_code
+ +  and   <HTTPStatus.METHOD_NOT_ALLOWED: 405> = HTTPStatus.METHOD_NOT_ALLOWED
+======================== 7 failed, 73 passed in 31.60s ========================

@@ -1,85 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth import get_user_model
-from .models import Title
 
-User = get_user_model()
+from reviews.constants import SYMBOL_LIMIT
 
-
-class Review(models.Model):
-    """Модель отзыва на произведение."""
-    title = models.ForeignKey(
-        Title,
-        on_delete=models.CASCADE,
-        related_name='reviews',
-        verbose_name='Произведение'
-    )
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='reviews',
-        verbose_name='Автор'
-    )
-    text = models.TextField(
-        verbose_name='Текст отзыва'
-    )
-    score = models.IntegerField(
-        verbose_name='Оценка',
-        validators=[
-            MinValueValidator(1, 'Оценка должна быть от 1 до 10'),
-            MaxValueValidator(10, 'Оценка должна быть от 1 до 10')
-        ]
-    )
-    pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True
-    )
-
-    class Meta:
-        ordering = ['-pub_date']
-        verbose_name = 'Отзыв'
-        verbose_name_plural = 'Отзывы'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['title', 'author'],
-                name='unique_review'
-            )
-        ]
-
-    def __str__(self):
-        return f'Отзыв {self.text}'
-
-
-class Comment(models.Model):
-    """Модель комментария к отзыву."""
-    review = models.ForeignKey(
-        Review,
-        on_delete=models.CASCADE,
-        related_name='comments',
-        verbose_name='Отзыв'
-    )
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='comments',
-        verbose_name='Автор'
-    )
-    text = models.TextField(
-        verbose_name='Текст комментария'
-    )
-    pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True
-    )
-
-    class Meta:
-        ordering = ['-pub_date']
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
-
-    def __str__(self):
-        return f'Комментарий {self.text}'
 
 class User(AbstractUser):
     USER = 'user'
@@ -121,17 +45,7 @@ class User(AbstractUser):
         ordering = ['username']
 
     def __str__(self):
-        return self.username
-from django.contrib.auth import get_user_model
-from django.db import models
-
-from reviews.constants import SYMBOL_LIMIT
-
-User = get_user_model()
-
-
-class User():
-    pass
+        return self.username[:SYMBOL_LIMIT]
 
 
 class Genre(models.Model):
@@ -209,12 +123,79 @@ class Title(models.Model):
         verbose_name_plural = 'Произведения'
 
     def __str__(self):
-        return self.name
-
-
-class Comment(models.Model):
-    pass
+        return self.name[:SYMBOL_LIMIT]
 
 
 class Review(models.Model):
-    pass
+    """Модель отзыва на произведение."""
+    title = models.ForeignKey(
+        Title,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name='Произведение'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        verbose_name='Автор'
+    )
+    text = models.TextField(
+        verbose_name='Текст отзыва'
+    )
+    score = models.IntegerField(
+        verbose_name='Оценка',
+        validators=[
+            MinValueValidator(1, 'Оценка должна быть от 1 до 10'),
+            MaxValueValidator(10, 'Оценка должна быть от 1 до 10')
+        ]
+    )
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ['-pub_date']
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'author'],
+                name='unique_review'
+            )
+        ]
+
+    def __str__(self):
+        return f'Отзыв {self.text}'[:SYMBOL_LIMIT]
+
+
+class Comment(models.Model):
+    """Модель комментария к отзыву."""
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Отзыв'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
+    text = models.TextField(
+        verbose_name='Текст комментария'
+    )
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ['-pub_date']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f'Комментарий {self.text}'[:SYMBOL_LIMIT]

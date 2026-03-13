@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Review, Comment
+from django.contrib.auth.admin import UserAdmin
+from .models import Comment, Review, User
 
 
 @admin.register(Review)
@@ -14,8 +15,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'author', 'review', 'pub_date')
     search_fields = ('text',)
     list_filter = ('pub_date',)
-from django.contrib.auth.admin import UserAdmin
 
-from .models import User
 
 admin.site.register(User, UserAdmin)

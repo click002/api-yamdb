@@ -1,35 +1,15 @@
+from django.utils import timezone
 from rest_framework import serializers
-from reviews.models import Review, Comment
+from rest_framework.relations import SlugRelatedField
 
-
-class ReviewSerializer(serializers.ModelSerializer):
-    """Сериализатор для отзывов."""
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True
-    )
-
-    class Meta:
-        model = Review
-        fields = ('id', 'text', 'author', 'score', 'pub_date')
-        read_only_fields = ('id', 'author', 'pub_date')
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    """Сериализатор для комментариев."""
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True
-    )
-
-    class Meta:
-        model = Comment
-        fields = ('id', 'text', 'author', 'pub_date')
-        read_only_fields = ('id', 'author', 'pub_date')
-from django.contrib.auth import get_user_model
-from rest_framework import serializers
-
-User = get_user_model()
+from reviews.models import (
+    Category,
+    Comment,
+    Genre,
+    Review,
+    Title,
+    User
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -45,6 +25,18 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
+# class UserCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('username', 'email')
+
+#     def validate_username(self, value):
+#         """Запрещаем использовать username 'me'(согласно postman_collection)"""
+#         if value.lower() == 'me':
+#             raise serializers.ValidationError(
+#                 'Имя пользователя "me" запрещено.'
+#             )
+
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -55,23 +47,21 @@ class UserCreateSerializer(serializers.ModelSerializer):
         if value.lower() == 'me':
             raise serializers.ValidationError(
                 'Имя пользователя "me" запрещено.'
-from django.utils import timezone
-from rest_framework import serializers
-from rest_framework.relations import SlugRelatedField
-from rest_framework.validators import UniqueTogetherValidator
+            )
+        return value  # !!! ВАЖНО: не забывайте возвращать значение
 
-from reviews.models import (
-    Category,
-    Comment,
-    Genre,
-    Review,
-    Title,
-    User
-)
+    def create(self, validated_data):
+        """Явно создаем пользователя."""
+        return User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=None  # Пароль не нужен
+        )
 
 
-class UserSerializer(serializers.ModelSerializer):
-    pass
+class TokenSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    confirmation_code = serializers.CharField()
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -139,12 +129,42 @@ class TitleWriteSerializer(serializers.ModelSerializer):
         return value
 
 
-class TokenSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    confirmation_code = serializers.CharField()
-class CommentSerializer(serializers.ModelSerializer):
-    pass
-
-
 class ReviewSerializer(serializers.ModelSerializer):
-    pass
+    """Сериализатор для отзывов."""
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+
+    class Meta:
+        model = Review
+        fields = ('id', 'text', 'author', 'score', 'pub_date')
+        read_only_fields = ('id', 'author', 'pub_date')
+
+    def validate(self, attrs):
+        """Проверяем, что пользователь не оставлял отзыв на это произведение."""
+        request = self.context['request']
+        # Только при создании (POST), НЕ при обновлении (PATCH)
+        if request.method == 'POST':
+            title_id = self.context['view'].kwargs.get('title_id')
+            if Review.objects.filter(
+                title_id=title_id,
+                author=request.user
+            ).exists():
+                raise serializers.ValidationError(
+                    'Вы уже оставляли отзыв на это произведение.'
+                )
+        return attrs
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    """Сериализатор для комментариев."""
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'text', 'author', 'pub_date')
+        read_only_fields = ('id', 'author', 'pub_date')
