@@ -142,7 +142,8 @@ class UserViewSet(viewsets.ModelViewSet):
             'create',
             'update',
             'partial_update',
-            'destroy']:
+            'destroy'
+        ]:
             permission_classes = [IsAdmin]
         else:
             permission_classes = [IsAdmin]
