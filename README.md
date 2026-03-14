@@ -27,11 +27,17 @@ POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmatio
 Method/Endpoint/Description/Access
 
 GET  |	/api/v1/users/  |	List users  |	Admin
+
 POST  |  /api/v1/users/  |	Create users  |	Admin
+
 GET  |	/api/v1/users/{username}/  |  Profile users	 |  Admin
+
 PATCH  |  /api/v1/users/{username}/  |	Edit user  |  Admin
+
 DELETE  |	/api/v1/users/{username}/  |  delete user  |  Admin
+
 GET	  |  /api/v1/users/me/	|  Me profile  |  Author
+
 PATCH  | /api/v1/users/me/  |  Edit my profile  |	Author
 
 #### Categories
