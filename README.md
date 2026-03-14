@@ -1,7 +1,7 @@
 # Yamdb API
 
 
-## Project Description
+### Project Description
 
 The YaMDb project collects user reviews of works. The works are divided into categories: "Books", "Movies", "Music", etc. 
 The list of categories can be expanded by the administrator.
