@@ -27,8 +27,8 @@ A rating (average value) is generated from user ratings. The user can leave only
 
 ### Authentication
 
-POST  |	/api/v1/auth/signup/  |	 Registration — receiving a confirmation code by email
-POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmation_code
+- POST  |	/api/v1/auth/signup/  |	 Registration — receiving a confirmation code by email
+- POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmation_code
 
 #### Users
 
