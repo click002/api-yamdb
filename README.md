@@ -25,7 +25,9 @@ A rating (average value) is generated from user ratings. The user can leave only
 - SQLite (by default, it is easily replaced by PostgreSQL)
 - drf-yasg or drf-spectacular — automatic API Documentation (ReDoc)
 
-### Authentication
+### Endpoints API
+
+## Authorization
 
 - POST  |	/api/v1/auth/signup/  |	 Registration — receiving a confirmation code by email
 - POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmation_code
