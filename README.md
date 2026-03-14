@@ -99,7 +99,8 @@ A rating (average value) is generated from user ratings. The user can leave only
 - admin - Full access. Managing users, categories, genres, and works
 
 
-### How to launch a project:
+## How to launch a project:
+
 Clone the repository and open it:
 
 ```
@@ -185,7 +186,7 @@ Authorization: Bearer <token>
 }
 ```
 
-# Authors: 
+## Authors: 
 ### Aristov Kirill - Tim Lead/developer
 ##### Wrote models, serializers, views, and endpoints for
 - Titles
