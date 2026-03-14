@@ -82,12 +82,11 @@ POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmatio
 
 #### Users roles
 
-Role  |  Opportunities
-Anonymous - Viewing of works, reviews, comments
-User -	Anonymous + posting reviews and comments, editing your own
-moderator - user + edit/delete any reviews and comments
-admin - Full access. Managing users, categories, genres, and works
-
+- Role  |  Opportunities
+- Anonymous - Viewing of works, reviews, comments
+- User -	Anonymous + posting reviews and comments, editing your own
+- moderator - user + edit/delete any reviews and comments
+- admin - Full access. Managing users, categories, genres, and works
 
 
 ### How to launch a project:
@@ -176,15 +175,6 @@ Authorization: Bearer <token>
 }
 ```
 
-##### Request
-
-##### Response
-
-
-#
-#
-#
-#
 # Authors: 
 ### Aristov Kirill - Tim Lead/developer
 ##### Wrote models, serializers, views, and endpoints for
