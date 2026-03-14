@@ -3,8 +3,16 @@
 
 ## Project Description
 
+The YaMDb project collects user reviews of works. The works are divided into categories: "Books", "Movies", "Music", etc. 
+The list of categories can be expanded by the administrator.
 
-## Basic functionality
+The works themselves are not stored in YaMDb — you can't watch a movie or listen to music here.
+
+A work can be assigned a genre from a preset list. 
+Only the administrator can create new genres.
+
+Grateful or outraged users leave text reviews for the works and give the work a score from 1 to 10. 
+A rating (average value) is generated from user ratings. The user can leave only one review per work.
 
 
 ### Technology stack
