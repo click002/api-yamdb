@@ -25,6 +25,7 @@ POST  |  /api/v1/auth/token/  |  Getting a JWT token by username and confirmatio
 #### Users
 
 Method/Endpoint/Description/Access
+#
 GET  |	/api/v1/users/  |	List users  |	Admin
 POST  |  /api/v1/users/  |	Create users  |	Admin
 GET  |	/api/v1/users/{username}/  |  Profile users	 |  Admin
@@ -36,6 +37,7 @@ PATCH  | /api/v1/users/me/  |  Edit my profile  |	Author
 #### Categories
 
 Method/Endpoint/Description/Access
+#
 GET  |	/api/v1/categories/  |	List category  |  All
 POST  |	/api/v1/categories/  |	Create category	  |  Admin
 DELETE  |	/api/v1/categories/{slug}/  |  Delete category  |	Admin
@@ -43,6 +45,7 @@ DELETE  |	/api/v1/categories/{slug}/  |  Delete category  |	Admin
 #### Genres
 
 Method/Endpoint/Description/Access
+#
 GET	 |  /api/v1/genres/	 |  List genres  |  All
 POST  |  /api/v1/genres/  |	Create genres  |  Admin
 DELETE  |	/api/v1/genres/{slug}/  |	Delete genre  |  Admin
@@ -50,6 +53,7 @@ DELETE  |	/api/v1/genres/{slug}/  |	Delete genre  |  Admin
 #### Titles
 
 Method/Endpoint/Description/Access
+#
 GET	|  /api/v1/titles/  |   List titles (with filtering) |	All
 POST  |  /api/v1/titles/  |   Create title  | 	Admin
 GET	  |  /api/v1/titles/{id}/  | 	Info of title  |	All
@@ -59,6 +63,7 @@ DELETE  | 	/api/v1/titles/{id}/  |  Delete title  |  Admin
 #### views
 
 Method/Endpoint/Description/Access
+#
 GET	|  /api/v1/titles/{id}/reviews/  |	List reviews  | 	All
 POST  | 	/api/v1/titles/{id}/reviews/  | 	Create reviews  | 	Author
 GET	  |  /api/v1/titles/{id}/reviews/{id}/  |	review  |	All
@@ -68,6 +73,7 @@ DELETE  |  /api/v1/titles/{id}/reviews/{id}/  |  Delete review  |	Author / Mod /
 #### Comments
 
 Method/Endpoint/Description/Access
+#
 GET	  | .../reviews/{id}/comments/  |	List comment  |  All
 POST  |  .../reviews/{id}/comments/	 |  Create comment	|  Author
 GET	 |  .../comments/{id}/	|  Comment	|  All
