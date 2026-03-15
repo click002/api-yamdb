@@ -12,7 +12,7 @@ from rest_framework.pagination import (
 )
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
-from reviews.models import Category, Comment, Genre, Review, Title
+
 from .permissions import (
     AllowAnyForSignup,
     IsAdmin,
@@ -32,6 +32,7 @@ from .serializers import (
     UserCreateSerializer,
     UserSerializer
 )
+from reviews.models import Category, Genre, Review, Title
 
 
 User = get_user_model()

@@ -1,6 +1,5 @@
 from django.utils import timezone
 from rest_framework import serializers
-from rest_framework.relations import SlugRelatedField
 from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
@@ -125,7 +124,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         if self.context.get('request').method == 'POST':
             title_id = self.context.get('view').kwargs.get('title_id')
             author = self.context.get('request').user
-            if Review.objects.filter(title_id=title_id, author=author).exists():
+            if Review.objects.filter(
+                title_id=title_id,
+                author=author
+            ).exists():
                 raise serializers.ValidationError(
                     'Вы уже оставили отзыв на это произведение'
                 )
