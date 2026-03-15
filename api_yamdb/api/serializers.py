@@ -1,15 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
-
-from reviews.models import (
-    Category,
-    Comment,
-    Genre,
-    Review,
-    Title,
-    User
-)
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,25 +16,6 @@ class UserSerializer(serializers.ModelSerializer):
             'role'
         )
 
-    def validate_username(self, value):
-        if value.lower() == 'me':
-            raise serializers.ValidationError(
-                'Имя пользователя "me" запрещено.'
-            )
-        return value
-
-
-# class UserCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email')
-
-#     def validate_username(self, value):
-#         """Запрещаем использовать username 'me'(согласно postman_collection)"""
-#         if value.lower() == 'me':
-#             raise serializers.ValidationError(
-#                 'Имя пользователя "me" запрещено.'
-#             )
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,36 +23,21 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
 
     def validate_username(self, value):
-        """Запрещаем использовать username 'me'(согласно postman_collection)"""
+        """Запрещаем использовать username 'me'."""
         if value.lower() == 'me':
             raise serializers.ValidationError(
                 'Имя пользователя "me" запрещено.'
             )
-        return value  # !!! ВАЖНО: не забывайте возвращать значение
-
-    def create(self, validated_data):
-        """Явно создаем пользователя."""
-        return User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=None  # Пароль не нужен
-        )
-
-
-class TokenSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    confirmation_code = serializers.CharField()
+        return value
 
 
 class GenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
         fields = ('name', 'slug')
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = ('name', 'slug')
@@ -137,7 +95,6 @@ class TitleWriteSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    """Сериализатор для отзывов."""
     author = serializers.SlugRelatedField(
         slug_field='username',
         read_only=True
@@ -146,26 +103,29 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
-        read_only_fields = ('id', 'author', 'pub_date')
+        read_only_fields = ('author', 'pub_date')
 
-    def validate(self, attrs):
-        """Проверяем, что пользователь не оставлял отзыв на это произведение."""
-        request = self.context['request']
-        # Только при создании (POST), НЕ при обновлении (PATCH)
-        if request.method == 'POST':
-            title_id = self.context['view'].kwargs.get('title_id')
-            if Review.objects.filter(
-                title_id=title_id,
-                author=request.user
-            ).exists():
+    def validate_score(self, value):
+        """Проверяем, что оценка от 1 до 10."""
+        if value < 1 or value > 10:
+            raise serializers.ValidationError(
+                'Оценка должна быть от 1 до 10'
+            )
+        return value
+
+    def validate(self, data):
+        """Проверяем, что пользователь не оставил повторный отзыв."""
+        if self.context.get('request').method == 'POST':
+            title_id = self.context.get('view').kwargs.get('title_id')
+            author = self.context.get('request').user
+            if Review.objects.filter(title_id=title_id, author=author).exists():
                 raise serializers.ValidationError(
-                    'Вы уже оставляли отзыв на это произведение.'
+                    'Вы уже оставили отзыв на это произведение'
                 )
-        return attrs
+        return data
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    """Сериализатор для комментариев."""
     author = serializers.SlugRelatedField(
         slug_field='username',
         read_only=True
@@ -174,4 +134,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
-        read_only_fields = ('id', 'author', 'pub_date')
+        read_only_fields = ('author', 'pub_date')
+
+
+class TokenSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    confirmation_code = serializers.CharField()

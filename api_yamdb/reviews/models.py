@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
-
 from reviews.constants import SYMBOL_LIMIT
 
 
@@ -31,7 +29,6 @@ class User(AbstractUser):
         choices=ROLE_CHOICES,
         default=USER,
     )
-
     confirmation_code = models.CharField(
         'Код подтверждения',
         max_length=10,
@@ -45,14 +42,14 @@ class User(AbstractUser):
         ordering = ['username']
 
     def __str__(self):
-        return self.username[:SYMBOL_LIMIT]
+        return self.username
 
 
 class Genre(models.Model):
-    """Категория произведения."""
+    """Жанр произведения."""
 
     name = models.CharField(
-        verbose_name='Название категории',
+        verbose_name='Название жанра',
         max_length=256
     )
     slug = models.SlugField(
@@ -66,7 +63,7 @@ class Genre(models.Model):
         verbose_name_plural = 'Жанры'
 
     def __str__(self):
-        return self.name[:SYMBOL_LIMIT]
+        return self.name
 
 
 class Category(models.Model):
@@ -87,7 +84,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.name[:SYMBOL_LIMIT]
+        return self.name
 
 
 class Title(models.Model):
@@ -127,12 +124,16 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    """Модель отзыва на произведение."""
+    """Отзыв на произведение."""
+
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Произведение'
+    )
+    text = models.TextField(
+        verbose_name='Текст отзыва'
     )
     author = models.ForeignKey(
         User,
@@ -140,18 +141,11 @@ class Review(models.Model):
         related_name='reviews',
         verbose_name='Автор'
     )
-    text = models.TextField(
-        verbose_name='Текст отзыва'
-    )
     score = models.IntegerField(
-        verbose_name='Оценка',
-        validators=[
-            MinValueValidator(1, 'Оценка должна быть от 1 до 10'),
-            MaxValueValidator(10, 'Оценка должна быть от 1 до 10')
-        ]
+        verbose_name='Оценка'
     )
     pub_date = models.DateTimeField(
-        'Дата публикации',
+        verbose_name='Дата публикации',
         auto_now_add=True
     )
 
@@ -167,16 +161,20 @@ class Review(models.Model):
         ]
 
     def __str__(self):
-        return f'Отзыв {self.text}'[:SYMBOL_LIMIT]
+        return self.text[:SYMBOL_LIMIT]
 
 
 class Comment(models.Model):
-    """Модель комментария к отзыву."""
+    """Комментарий к отзыву."""
+
     review = models.ForeignKey(
         Review,
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Отзыв'
+    )
+    text = models.TextField(
+        verbose_name='Текст комментария'
     )
     author = models.ForeignKey(
         User,
@@ -184,11 +182,8 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Автор'
     )
-    text = models.TextField(
-        verbose_name='Текст комментария'
-    )
     pub_date = models.DateTimeField(
-        'Дата публикации',
+        verbose_name='Дата публикации',
         auto_now_add=True
     )
 
@@ -198,4 +193,4 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return f'Комментарий {self.text}'[:SYMBOL_LIMIT]
+        return self.text[:SYMBOL_LIMIT]
