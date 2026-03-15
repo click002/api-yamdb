@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from api.validators import validate_username_not_me, validate_username_chars
 from reviews.constants import SYMBOL_LIMIT
 
 
@@ -14,6 +16,11 @@ class User(AbstractUser):
         (ADMIN, 'admin'),
     ]
 
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=[validate_username_not_me, validate_username_chars],
+    )
     email = models.EmailField(
         'email address',
         max_length=254,

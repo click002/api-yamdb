@@ -16,6 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
             'role'
         )
 
+    def validate_username(self, value):
+        if value.lower() == 'me':
+            raise serializers.ValidationError(
+                'Имя пользователя "me" запрещено.'
+            )
+        return value
+
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:

@@ -13,7 +13,6 @@ from rest_framework.pagination import (
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 from reviews.models import Category, Comment, Genre, Review, Title
-
 from .permissions import (
     AllowAnyForSignup,
     IsAdmin,
@@ -45,7 +44,6 @@ def signup(request):
     username = request.data.get('username')
     email = request.data.get('email')
 
-    # Проверка наличия обязательных полей
     if not username or not email:
         errors = {}
         if not username:
@@ -54,11 +52,9 @@ def signup(request):
             errors['email'] = ['Это поле обязательно.']
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Проверяем, существует ли пользователь с такими username и email
     user = User.objects.filter(username=username, email=email).first()
 
     if user:
-        # Пользователь уже существует – отправляем код подтверждения
         confirmation_code = str(random.randint(10000, 99999))
         user.confirmation_code = confirmation_code
         user.save()
@@ -75,12 +71,10 @@ def signup(request):
             status=status.HTTP_200_OK
         )
 
-    # Пользователь не найден – проверяем данные через сериализатор
     serializer = UserCreateSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Дополнительная проверка уникальности полей (на случай, если кто-то пытается занять занятые)
     if User.objects.filter(username=username).exists():
         return Response(
             {'username': ['Пользователь с таким именем уже существует.']},
@@ -92,7 +86,6 @@ def signup(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # Создаём нового пользователя
     user = User.objects.create_user(
         username=username,
         email=email
@@ -220,22 +213,18 @@ class TitleViewSet(viewsets.ModelViewSet):
             rating=Avg('reviews__score')
         ).order_by('name')
 
-        # Фильтрация по genre
         genre_slug = self.request.query_params.get('genre')
         if genre_slug:
             queryset = queryset.filter(genre__slug=genre_slug)
 
-        # Фильтрация по category
         category_slug = self.request.query_params.get('category')
         if category_slug:
             queryset = queryset.filter(category__slug=category_slug)
 
-        # Фильтрация по year
         year = self.request.query_params.get('year')
         if year:
             queryset = queryset.filter(year=year)
 
-        # Фильтрация по name (точное совпадение)
         name = self.request.query_params.get('name')
         if name:
             queryset = queryset.filter(name=name)
@@ -261,6 +250,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         serializer.save(author=self.request.user, title=title)
+
+    def update_title_rating(self, title_id):
+        """Обновляет рейтинг произведения."""
+        title = Title.objects.get(pk=title_id)
+        average_score = title.reviews.aggregate(Avg('score'))['score__avg']
+        title.rating = average_score or 0
+        title.save(update_fields=['rating'])
 
 
 class CommentViewSet(viewsets.ModelViewSet):
