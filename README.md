@@ -187,7 +187,7 @@ Authorization: Bearer <token>
 ```
 
 ## Authors: 
-### Aristov Kirill - Tim Lead/developer
+### Aristov Kirill - Team Lead/developer
 ##### Wrote models, serializers, views, and endpoints for
 - Titles
 - Genres
