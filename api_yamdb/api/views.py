@@ -40,6 +40,7 @@ User = get_user_model()
 # возможно неправильно вставляем его,
 # но по другому не знаем как((
 
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def signup(request):

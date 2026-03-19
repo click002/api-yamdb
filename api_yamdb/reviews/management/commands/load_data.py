@@ -10,11 +10,11 @@ DATA_DIR = Path(settings.BASE_DIR) / 'static' / 'data'
 
 MODELS_FILES = [
     (User, 'users.csv'),
-    (Category,'category.csv'),
-    (Genre,'genre.csv'),
-    (Title,'titles.csv'),
-    (Review,'review.csv'),
-    (Comment,'comments.csv'),
+    (Category, 'category.csv'),
+    (Genre, 'genre.csv'),
+    (Title, 'titles.csv'),
+    (Review, 'review.csv'),
+    (Comment, 'comments.csv'),
 ]
 
 FK_FIELDS = {
@@ -34,7 +34,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.WARNING('Начинаю загрузку данных...'))
         for model, filename in MODELS_FILES:
             self.load_model(model, filename)
-        
+
         self.load_genre_title()
 
         self.stdout.write(self.style.WARNING('Все данные загружены!'))

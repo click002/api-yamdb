@@ -14,7 +14,15 @@ class UserWithRoleAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Permissions', {
+            'fields': (
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'groups',
+                'user_permissions'
+            )
+        }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
         ('Custom Fields', {'fields': ('role', 'bio', 'confirmation_code')}),
     )
@@ -34,12 +42,12 @@ class GenreAdmin(admin.ModelAdmin):
 
 @admin.register(Title)
 class TitleAdmin(admin.ModelAdmin):
+
     list_display = ('name', 'year', 'category', 'genre_list')
     list_filter = ('year', 'category')
     filter_horizontal = ('genre',)
 
     @admin.display(description='Жанры',)
-
     def genre_list(self, obj):
         return ', '.join([g.name for g in obj.genre.all()])
 
@@ -50,7 +58,6 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('score', 'pub_date')
 
     @admin.display(description='Отзыв',)
-
     def short_review(self, obj):
         if len(obj.text) > TEXT_LIMIT_ADMIN:
             return obj.text[:TEXT_LIMIT_ADMIN] + '...'
@@ -62,7 +69,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('review', 'author', 'pub_date', 'short_comment')
 
     @admin.display(description='Комментарий',)
-
     def short_comment(self, obj):
         if len(obj.text) > TEXT_LIMIT_ADMIN:
             return obj.text[:TEXT_LIMIT_ADMIN] + '...'

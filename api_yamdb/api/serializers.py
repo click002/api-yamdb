@@ -33,16 +33,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         request = self.context.get('request')
-        if request and not (request.user.is_admin or request.user.is_superuser):
+        if request and not (
+            request.user.is_admin or request.user.is_superuser
+        ):
             validated_data.pop('role', None)
         return super().update(instance, validated_data)
 
     def validate(self, data):
         if self.instance is None:
             username = data.get('username')
-            if username and User.objects.filter(username=username).exists():
+            if username and User.objects.filter(
+                username=username
+            ).exists():
                 raise serializers.ValidationError(
-                    {'username': 'Пользователь с таким username уже существует'}
+                    {'username': 'Пользователь с таким username уже есть'}
                 )
 
             email = data.get('email')
@@ -69,11 +73,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
         """Проверка: username не занят другим email и наоборот."""
         username = data.get('username')
         email = data.get('email')
-        if User.objects.filter(username=username).exclude(email=email).exists():
+        if User.objects.filter(
+            username=username
+        ).exclude(email=email).exists():
             raise serializers.ValidationError(
                 {'username': 'Это имя уже занято.'}
             )
-        if User.objects.filter(email=email).exclude(username=username).exists():
+        if User.objects.filter(
+            email=email
+        ).exclude(username=username).exists():
             raise serializers.ValidationError(
                 {'email': 'Этот email уже занят.'}
             )
