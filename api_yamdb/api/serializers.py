@@ -1,16 +1,15 @@
+from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers
-
+from reviews.constants import MAX_SCORE_REVIEW, MIN_SCORE_REVIEW
 from reviews.models import Category, Comment, Genre, Review, Title, User
-from reviews.constants import MIN_SCORE_REVIEW, MAX_SCORE_REVIEW
 
 from .validators import (
-    validate_username_not_me,
+    validate_username_chars,
     validate_username_lenght,
-    validate_username_chars
+    validate_username_not_me
 )
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.tokens import default_token_generator
 
 
 class UserSerializer(serializers.ModelSerializer):

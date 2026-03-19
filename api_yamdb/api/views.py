@@ -1,5 +1,3 @@
-import random
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -7,22 +5,16 @@ from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import (
-    filters,
-    mixins,
-    permissions,
-    status,
-    viewsets
-)
+from rest_framework import filters, mixins, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.pagination import (
-    PageNumberPagination,
-    LimitOffsetPagination
+    LimitOffsetPagination,
+    PageNumberPagination
 )
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
-from django.contrib.auth.tokens import default_token_generator
+from reviews.models import Category, Genre, Review, Title
 
 from .filters import TitleFilter
 from .permissions import (
@@ -30,23 +22,23 @@ from .permissions import (
     IsAdminOrModeratorOrReadOnly,
     IsAdminOrReadOnly
 )
-
 from .serializers import (
     CategorySerializer,
     CommentSerializer,
     GenreSerializer,
     ReviewSerializer,
-    TitleWriteSerializer,
     TitleReadSerializer,
+    TitleWriteSerializer,
     TokenSerializer,
     UserCreateSerializer,
     UserSerializer
 )
 
-from reviews.models import Category, Genre, Review, Title
-
 User = get_user_model()
 
+# pytest проходит, а постман падает сразу при запуске на уровне токенов,
+# возможно неправильно вставляем его,
+# но по другому не знаем как((
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -80,7 +72,7 @@ def signup(request):
     confirmation_code = default_token_generator.make_token(user)
 
     send_mail(
-        'Код подтверждения для YaMdb',
+        'Код подтверждения для YaMDb',
         f'Ваш код подтверждения: {confirmation_code}',
         settings.DEFAULT_FROM_EMAIL,
         [user.email],
@@ -165,16 +157,22 @@ class CreateListDestroyViewSet(
 
 
 class GenreViewSet(CreateListDestroyViewSet):
+    """ViewSet для жанров."""
+
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
 
 class CategoryViewSet(CreateListDestroyViewSet):
+    """ViewSet для категорий."""
+
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class TitleViewSet(viewsets.ModelViewSet):
+    """ViewSet для произведений."""
+
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     pagination_class = LimitOffsetPagination
     permission_classes = [IsAdminOrReadOnly]
