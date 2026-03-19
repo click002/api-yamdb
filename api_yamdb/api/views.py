@@ -15,7 +15,10 @@ from rest_framework import (
     viewsets
 )
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import (
+    PageNumberPagination,
+    LimitOffsetPagination
+)
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
@@ -25,24 +28,46 @@ from .filters import TitleFilter
 from .permissions import (
     IsAdmin,
     IsAdminOrModeratorOrReadOnly,
-    IsAdminOrReadOnlyForList,
-    IsAuthorOrAdmin
+    IsAdminOrReadOnly
 )
 
 from .serializers import (
     CategorySerializer,
-    CommentsSerializer,
+    CommentSerializer,
     GenreSerializer,
     ReviewSerializer,
-    TitleSerializer,
+    TitleWriteSerializer,
+    TitleReadSerializer,
     TokenSerializer,
     UserCreateSerializer,
-    UsersSerializer
+    UserSerializer
 )
 
 from reviews.models import Category, Genre, Review, Title
 
 User = get_user_model()
+
+
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def signup(request):
+#     """Регистрация нового пользователя."""
+#     serializer = UserCreateSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+
+#     user = serializer.save()
+
+#     confirmation_code = default_token_generator.make_token(user)
+
+#     send_mail(
+#         'Код подтверждения для YaMdb',
+#         f'Ваш код подтверждения: {confirmation_code}',
+#         settings.DEFAULT_FROM_EMAIL,
+#         [user.email],
+#         fail_silently=False,
+#     )
+
+#     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -52,7 +77,10 @@ def signup(request):
     serializer = UserCreateSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    user = serializer.save()
+    user, created = User.objects.get_or_create(
+        username=serializer.validated_data['username'],
+        email=serializer.validated_data['email']
+    )
 
     confirmation_code = default_token_generator.make_token(user)
 
@@ -64,7 +92,8 @@ def signup(request):
         fail_silently=False,
     )
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    response_serializer = UserCreateSerializer(user)
+    return Response(response_serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -95,6 +124,8 @@ class UserViewSet(viewsets.ModelViewSet):
         """Права доступа для разных действий."""
         if self.action == 'me':
             permission_classes = [IsAuthenticated]
+        elif self.action in ['list', 'retrieve']:
+            permission_classes = [IsAdmin]
         elif self.action in ['create', 'destroy', 'update', 'partial_update']:
             permission_classes = [IsAdmin]
         else:

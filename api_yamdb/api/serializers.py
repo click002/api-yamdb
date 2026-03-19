@@ -4,7 +4,11 @@ from rest_framework import serializers
 from reviews.models import Category, Comment, Genre, Review, Title, User
 from reviews.constants import MIN_SCORE_REVIEW, MAX_SCORE_REVIEW
 
-from .validators import validate_username_not_me
+from .validators import (
+    validate_username_not_me,
+    validate_username_lenght,
+    validate_username_chars
+)
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.tokens import default_token_generator
 
@@ -21,8 +25,33 @@ class UserSerializer(serializers.ModelSerializer):
             'role'
         )
     username = serializers.CharField(
-        validators=[validate_username_not_me]
+        validators=[
+            validate_username_not_me,
+            validate_username_lenght,
+            validate_username_chars
+        ]
     )
+
+    def update(self, instance, validated_data):
+        request = self.context.get('request')
+        if request and not (request.user.is_admin or request.user.is_superuser):
+            validated_data.pop('role', None)
+        return super().update(instance, validated_data)
+
+    def validate(self, data):
+        if self.instance is None:
+            username = data.get('username')
+            if username and User.objects.filter(username=username).exists():
+                raise serializers.ValidationError(
+                    {'username': 'Пользователь с таким username уже существует'}
+                )
+
+            email = data.get('email')
+            if email and User.objects.filter(email=email).exists():
+                raise serializers.ValidationError(
+                    {'email': 'Пользователь с таким email уже существует'}
+                )
+        return data
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -96,12 +125,11 @@ class TitleWriteSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'year',
-            'rating',
             'description',
             'genre',
             'category'
         )
-        read_only_fields = ('rating',)
+        # read_only_fields = ('rating',)
 
     def validate_year(self, value):
         """Проверяем, что год не из будущего."""
@@ -140,9 +168,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Проверяем, что пользователь не оставил повторный отзыв."""
-        if self.context.get('request').method == 'POST':
+        request = self.context.get('request')
+
+        if not request or not request.user.is_authenticated:
+            return data
+
+        if request.method == 'POST':
             title_id = self.context.get('view').kwargs.get('title_id')
-            author = self.context.get('request').user
+            author = request.user
             if Review.objects.filter(
                 title_id=title_id,
                 author=author

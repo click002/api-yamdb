@@ -11,6 +11,7 @@ from reviews.constants import (
     NAME_FIELD_LIMIT,
     EMAIL_FIELD_LIMIT,
     ROLE_FIELD_LIMIT,
+    USERNAME_FIELD_LIMIT,
     CONFIRMATION_CODE_LIMIT
 )
 
@@ -60,7 +61,7 @@ class User(AbstractUser):
     ]
 
     username = models.CharField(
-        max_length=150,
+        max_length=USERNAME_FIELD_LIMIT,
         unique=True,
         validators=[validate_username_not_me, validate_username_chars],
     )

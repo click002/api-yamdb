@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 FORBIDDEN_USERNAME = 'me'
-USERNAME_CHARS = r'^[\w.@+-]+$'
+USERNAME_CHARS = r'^[\w.@+-]+\Z'
 
 
 def doc(docstring):
@@ -14,12 +14,20 @@ def doc(docstring):
         return func
     return decorator
 
-#  вместо """"Запрещает использовать 'me' как username.""" теперь декоратор
+
 @doc(f"Запрещает использовать '{FORBIDDEN_USERNAME}' как username.")
 def validate_username_not_me(value):
     if value == FORBIDDEN_USERNAME:
         raise ValidationError(
             f'Имя пользователя "{FORBIDDEN_USERNAME}" запрещено.'
+        )
+
+
+def validate_username_lenght(value):
+    """Проверяет что длина username не больше 150"""
+    if len(value) > 150:
+        raise ValidationError(
+            'Имя пользователя не может быть длиннее 150 символов.'
         )
 
 
