@@ -1,13 +1,23 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
+from .constants import TEXT_LIMIT_ADMIN
 from .models import Category, Comment, Genre, Review, Title, User
 
 
 @admin.register(User)
-class CustomUserAdmin(UserAdmin):
+class UserWithRoleAdmin(UserAdmin):
     list_display = ('username', 'email', 'role', 'bio', 'confirmation_code')
     list_filter = ('role',)
     search_fields = ('username', 'email')
+
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Custom Fields', {'fields': ('role', 'bio', 'confirmation_code')}),
+    )
 
 
 @admin.register(Category)
@@ -28,9 +38,10 @@ class TitleAdmin(admin.ModelAdmin):
     list_filter = ('year', 'category')
     filter_horizontal = ('genre',)
 
+    @admin.display(description='Жанры',)
+
     def genre_list(self, obj):
         return ', '.join([g.name for g in obj.genre.all()])
-    genre_list.short_description = 'Жанры'
 
 
 @admin.register(Review)
@@ -38,19 +49,21 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'score', 'pub_date', 'short_review')
     list_filter = ('score', 'pub_date')
 
+    @admin.display(description='Отзыв',)
+
     def short_review(self, obj):
-        if len(obj.text) > 50:
-            return obj.text[:50] + '...'
+        if len(obj.text) > TEXT_LIMIT_ADMIN:
+            return obj.text[:TEXT_LIMIT_ADMIN] + '...'
         return obj.text
-    short_review.short_description = 'Отзыв'
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('review', 'author', 'pub_date', 'short_comment')
 
+    @admin.display(description='Комментарий',)
+
     def short_comment(self, obj):
-        if len(obj.text) > 50:
-            return obj.text[:50] + '...'
+        if len(obj.text) > TEXT_LIMIT_ADMIN:
+            return obj.text[:TEXT_LIMIT_ADMIN] + '...'
         return obj.text
-    short_comment.short_description = 'Комментарий'
