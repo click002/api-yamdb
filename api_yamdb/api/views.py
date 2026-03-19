@@ -1,6 +1,8 @@
 import random
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
@@ -13,130 +15,66 @@ from rest_framework import (
     viewsets
 )
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework.pagination import (
-    LimitOffsetPagination,
-    PageNumberPagination
-)
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
+from django.contrib.auth.tokens import default_token_generator
 
 from .filters import TitleFilter
 from .permissions import (
-    AllowAnyForSignup,
     IsAdmin,
     IsAdminOrModeratorOrReadOnly,
-    IsAdminOrReadOnly,
-    IsAdminUserOrReadOnlyForList,
+    IsAdminOrReadOnlyForList,
     IsAuthorOrAdmin
 )
+
 from .serializers import (
     CategorySerializer,
-    CommentSerializer,
+    CommentsSerializer,
     GenreSerializer,
     ReviewSerializer,
-    TitleReadSerializer,
-    TitleWriteSerializer,
+    TitleSerializer,
     TokenSerializer,
     UserCreateSerializer,
-    UserSerializer
+    UsersSerializer
 )
-from reviews.models import Category, Genre, Review, Title
 
+from reviews.models import Category, Genre, Review, Title
 
 User = get_user_model()
 
 
 @api_view(['POST'])
-@permission_classes([AllowAnyForSignup])
+@permission_classes([AllowAny])
 def signup(request):
     """Регистрация нового пользователя."""
-    username = request.data.get('username')
-    email = request.data.get('email')
-
-    if not username or not email:
-        errors = {}
-        if not username:
-            errors['username'] = ['Это поле обязательно.']
-        if not email:
-            errors['email'] = ['Это поле обязательно.']
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-    user = User.objects.filter(username=username, email=email).first()
-
-    if user:
-        confirmation_code = str(random.randint(10000, 99999))
-        user.confirmation_code = confirmation_code
-        user.save()
-
-        send_mail(
-            'Код подтверждения для YaMDb',
-            f'Ваш код подтверждения: {confirmation_code}',
-            'admin@yamdb.ru',
-            [user.email],
-            fail_silently=False,
-        )
-        return Response(
-            {'username': username, 'email': email},
-            status=status.HTTP_200_OK
-        )
-
     serializer = UserCreateSerializer(data=request.data)
-    if not serializer.is_valid():
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer.is_valid(raise_exception=True)
 
-    if User.objects.filter(username=username).exists():
-        return Response(
-            {'username': ['Пользователь с таким именем уже существует.']},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    if User.objects.filter(email=email).exists():
-        return Response(
-            {'email': ['Пользователь с таким email уже существует.']},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    user = serializer.save()
 
-    user = User.objects.create_user(
-        username=username,
-        email=email
-    )
-    confirmation_code = str(random.randint(10000, 99999))
-    user.confirmation_code = confirmation_code
-    user.save()
+    confirmation_code = default_token_generator.make_token(user)
 
     send_mail(
-        'Код подтверждения для YaMDb',
+        'Код подтверждения для YaMdb',
         f'Ваш код подтверждения: {confirmation_code}',
-        'admin@yamdb.ru',
+        settings.DEFAULT_FROM_EMAIL,
         [user.email],
         fail_silently=False,
     )
 
-    return Response(
-        {'username': username, 'email': email},
-        status=status.HTTP_200_OK
-    )
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-@permission_classes([AllowAnyForSignup])
+@permission_classes([AllowAny])
 def token(request):
     """Получение JWT токена."""
     serializer = TokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    username = serializer.validated_data.get('username')
-    confirmation_code = serializer.validated_data.get('confirmation_code')
-
-    user = get_object_or_404(User, username=username)
-
-    if user.confirmation_code != confirmation_code:
-        return Response(
-            {'error': 'Неверный код подтверждения'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    user.confirmation_code = None
-    user.save()
+    user = serializer.validated_data['user']
 
     token = AccessToken.for_user(user)
     return Response({'token': str(token)}, status=status.HTTP_200_OK)
@@ -156,11 +94,11 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         """Права доступа для разных действий."""
         if self.action == 'me':
-            permission_classes = [IsAuthorOrAdmin]
+            permission_classes = [IsAuthenticated]
         elif self.action in ['create', 'destroy', 'update', 'partial_update']:
             permission_classes = [IsAdmin]
         else:
-            permission_classes = [IsAdminUserOrReadOnlyForList]
+            permission_classes = [IsAdminOrReadOnly]
         return [permission() for permission in permission_classes]
 
     @action(detail=False, methods=['get', 'patch'], url_path='me')
@@ -178,9 +116,6 @@ class UserViewSet(viewsets.ModelViewSet):
             partial=True
         )
         serializer.is_valid(raise_exception=True)
-
-        if 'role' in serializer.validated_data:
-            serializer.validated_data.pop('role')
 
         serializer.save()
         return Response(serializer.data)

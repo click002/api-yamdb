@@ -4,6 +4,10 @@ from rest_framework import serializers
 from reviews.models import Category, Comment, Genre, Review, Title, User
 from reviews.constants import MIN_SCORE_REVIEW, MAX_SCORE_REVIEW
 
+from .validators import validate_username_not_me
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.tokens import default_token_generator
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,13 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'role'
         )
-
-    def validate_username(self, value):
-        if value.lower() == 'me':
-            raise serializers.ValidationError(
-                'Имя пользователя "me" запрещено.'
-            )
-        return value
+    username = serializers.CharField(
+        validators=[validate_username_not_me]
+    )
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -30,13 +30,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email')
 
-    def validate_username(self, value):
-        """Запрещаем использовать username 'me'."""
-        if value.lower() == 'me':
-            raise serializers.ValidationError(
-                'Имя пользователя "me" запрещено.'
-            )
-        return value
+    def create(self, validated_data):
+        user, created = User.objects.get_or_create(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        return user
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -168,3 +167,15 @@ class CommentSerializer(serializers.ModelSerializer):
 class TokenSerializer(serializers.Serializer):
     username = serializers.CharField()
     confirmation_code = serializers.CharField()
+
+    def validate(self, data):
+        username = data.get('username')
+        confirmation_code = data.get('confirmation_code')
+
+        user = get_object_or_404(User, username=username)
+
+        if not default_token_generator.check_token(user, confirmation_code):
+            raise serializers.ValidationError('Неверный код подтверждения')
+
+        data['user'] = user
+        return data

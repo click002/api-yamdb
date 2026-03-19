@@ -94,6 +94,14 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN
+
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
+
 
 class Genre(CategoryGenreBaseModel):
     """Жанр произведения."""
@@ -180,7 +188,6 @@ class Review(ReviewCommentBaseModel):
                 name='unique_review'
             )
         ]
-
 
 
 class Comment(ReviewCommentBaseModel):

@@ -3,17 +3,29 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 
+FORBIDDEN_USERNAME = 'me'
+USERNAME_CHARS = r'^[\w.@+-]+$'
+
+
+def doc(docstring):
+    """Декоратор для задания docstring динамически."""
+    def decorator(func):
+        func.__doc__ = docstring
+        return func
+    return decorator
+
+#  вместо """"Запрещает использовать 'me' как username.""" теперь декоратор
+@doc(f"Запрещает использовать '{FORBIDDEN_USERNAME}' как username.")
 def validate_username_not_me(value):
-    """Запрещает использовать 'me' как username."""
-    if value.lower() == 'me':
+    if value == FORBIDDEN_USERNAME:
         raise ValidationError(
-            'Имя пользователя "me" запрещено.'
+            f'Имя пользователя "{FORBIDDEN_USERNAME}" запрещено.'
         )
 
 
 def validate_username_chars(value):
     """Проверяет допустимые символы в username."""
-    if not re.match(r'^[\w.@+-]+$', value):
+    if not re.match(USERNAME_CHARS, value):
         raise ValidationError(
             'Username содержит недопустимые символы.'
         )
