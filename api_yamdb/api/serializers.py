@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from reviews.models import Category, Comment, Genre, Review, Title, User
+from reviews.constants import MIN_SCORE_REVIEW, MAX_SCORE_REVIEW
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -102,23 +103,27 @@ class TitleWriteSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    """Сериализатор для отзывов."""
+
     author = serializers.SlugRelatedField(
         slug_field='username',
         read_only=True
     )
 
+    message = f'Оценка должна быть от {MIN_SCORE_REVIEW} до {MAX_SCORE_REVIEW}'
+
+    score = serializers.IntegerField(
+        min_value=MIN_SCORE_REVIEW,
+        max_value=MAX_SCORE_REVIEW,
+        error_messages={
+            'min_value': message,
+            'max_value': message,
+        }
+    )
+
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
-        read_only_fields = ('author', 'pub_date')
-
-    def validate_score(self, value):
-        """Проверяем, что оценка от 1 до 10."""
-        if value < 1 or value > 10:
-            raise serializers.ValidationError(
-                'Оценка должна быть от 1 до 10'
-            )
-        return value
 
     def validate(self, data):
         """Проверяем, что пользователь не оставил повторный отзыв."""
@@ -144,7 +149,6 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
-        read_only_fields = ('author', 'pub_date')
 
 
 class TokenSerializer(serializers.Serializer):
