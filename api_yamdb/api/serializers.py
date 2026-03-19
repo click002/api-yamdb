@@ -66,6 +66,20 @@ class UserCreateSerializer(serializers.ModelSerializer):
         )
         return user
 
+    def validate(self, data):
+        """Проверка: username не занят другим email и наоборот."""
+        username = data.get('username')
+        email = data.get('email')
+        if User.objects.filter(username=username).exclude(email=email).exists():
+            raise serializers.ValidationError(
+                {'username': 'Это имя уже занято.'}
+            )
+        if User.objects.filter(email=email).exclude(username=username).exists():
+            raise serializers.ValidationError(
+                {'email': 'Этот email уже занят.'}
+            )
+        return data
+
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -129,7 +143,6 @@ class TitleWriteSerializer(serializers.ModelSerializer):
             'genre',
             'category'
         )
-        # read_only_fields = ('rating',)
 
     def validate_year(self, value):
         """Проверяем, что год не из будущего."""

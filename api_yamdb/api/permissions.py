@@ -30,6 +30,12 @@ class IsAdminOrModeratorOrReadOnly(permissions.BasePermission):
     Модератор и администратор могут редактировать и удалять.
     """
 
+    def has_permission(self, request, view):
+        """Проверка ДО доступа к объекту."""
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user and request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
         return (
             request.method in permissions.SAFE_METHODS

@@ -48,39 +48,34 @@ from reviews.models import Category, Genre, Review, Title
 User = get_user_model()
 
 
-# @api_view(['POST'])
-# @permission_classes([AllowAny])
-# def signup(request):
-#     """Регистрация нового пользователя."""
-#     serializer = UserCreateSerializer(data=request.data)
-#     serializer.is_valid(raise_exception=True)
-
-#     user = serializer.save()
-
-#     confirmation_code = default_token_generator.make_token(user)
-
-#     send_mail(
-#         'Код подтверждения для YaMdb',
-#         f'Ваш код подтверждения: {confirmation_code}',
-#         settings.DEFAULT_FROM_EMAIL,
-#         [user.email],
-#         fail_silently=False,
-#     )
-
-#     return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def signup(request):
     """Регистрация нового пользователя."""
+    username = request.data.get('username')
+    email = request.data.get('email')
+
+    existing_user = User.objects.filter(
+        username=username, email=email
+    ).first()
+
+    if existing_user:
+        confirmation_code = default_token_generator.make_token(existing_user)
+        send_mail(
+            'Код подтверждения для YaMDb',
+            f'Ваш код подтверждения: {confirmation_code}',
+            settings.DEFAULT_FROM_EMAIL,
+            [existing_user.email],
+            fail_silently=False,
+        )
+        return Response(
+            {'username': username, 'email': email},
+            status=status.HTTP_200_OK
+        )
+
     serializer = UserCreateSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-
-    user, created = User.objects.get_or_create(
-        username=serializer.validated_data['username'],
-        email=serializer.validated_data['email']
-    )
+    user = serializer.save()
 
     confirmation_code = default_token_generator.make_token(user)
 
@@ -92,8 +87,7 @@ def signup(request):
         fail_silently=False,
     )
 
-    response_serializer = UserCreateSerializer(user)
-    return Response(response_serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -115,26 +109,24 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('username')
     serializer_class = UserSerializer
     lookup_field = 'username'
+    permission_classes = [IsAdmin]
     pagination_class = PageNumberPagination
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
 
-    def get_permissions(self):
-        """Права доступа для разных действий."""
-        if self.action == 'me':
-            permission_classes = [IsAuthenticated]
-        elif self.action in ['list', 'retrieve']:
-            permission_classes = [IsAdmin]
-        elif self.action in ['create', 'destroy', 'update', 'partial_update']:
-            permission_classes = [IsAdmin]
-        else:
-            permission_classes = [IsAdminOrReadOnly]
-        return [permission() for permission in permission_classes]
-
-    @action(detail=False, methods=['get', 'patch'], url_path='me')
+    @action(
+        detail=False,
+        methods=['get', 'patch', 'delete'],
+        url_path='me',
+        permission_classes=[IsAuthenticated]
+    )
     def me(self, request):
         """Свой профиль."""
+
+        if request.method == 'DELETE':
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
         user = request.user
 
         if request.method == 'GET':
