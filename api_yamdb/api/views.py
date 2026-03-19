@@ -4,7 +4,14 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, status, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import (
+    filters,
+    mixins,
+    permissions,
+    status,
+    viewsets
+)
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.pagination import (
     LimitOffsetPagination,
@@ -13,6 +20,7 @@ from rest_framework.pagination import (
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
+from .filters import TitleFilter
 from .permissions import (
     AllowAnyForSignup,
     IsAdmin,
@@ -184,57 +192,47 @@ class CreateListDestroyViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    """Базовый ViewSet: создание, список, удаление."""
+    """
+    Базовый ViewSet:
+
+    -создание,
+    -список,
+    -удаление.
+    """
 
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
     permission_classes = [IsAdminOrReadOnly]
+    lookup_field = 'slug'
 
 
 class GenreViewSet(CreateListDestroyViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    lookup_field = 'slug'
 
 
 class CategoryViewSet(CreateListDestroyViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    lookup_field = 'slug'
 
 
 class TitleViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     pagination_class = LimitOffsetPagination
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [filters.OrderingFilter]
-    search_fields = ['name']
+    filter_backends = [
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    ]
+    filterset_class = TitleFilter
 
     def get_queryset(self):
-        queryset = Title.objects.annotate(
+        return Title.objects.annotate(
             rating=Avg('reviews__score')
         ).order_by('name')
 
-        genre_slug = self.request.query_params.get('genre')
-        if genre_slug:
-            queryset = queryset.filter(genre__slug=genre_slug)
-
-        category_slug = self.request.query_params.get('category')
-        if category_slug:
-            queryset = queryset.filter(category__slug=category_slug)
-
-        year = self.request.query_params.get('year')
-        if year:
-            queryset = queryset.filter(year=year)
-
-        name = self.request.query_params.get('name')
-        if name:
-            queryset = queryset.filter(name=name)
-
-        return queryset
-
     def get_serializer_class(self):
-        if self.action in ('list', 'retrieve'):
+        if self.action in permissions.SAFE_METHODS:
             return TitleReadSerializer
         return TitleWriteSerializer
 
