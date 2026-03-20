@@ -13,6 +13,14 @@ from .validators import (
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[
+            validate_username_not_me,
+            validate_username_lenght,
+            validate_username_chars
+        ]
+    )
+
     class Meta:
         model = User
         fields = (
@@ -23,13 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'role'
         )
-    username = serializers.CharField(
-        validators=[
-            validate_username_not_me,
-            validate_username_lenght,
-            validate_username_chars
-        ]
-    )
 
     def update(self, instance, validated_data):
         request = self.context.get('request')
@@ -63,7 +64,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
 
     def create(self, validated_data):
-        user, created = User.objects.get_or_create(
+        user, _ = User.objects.get_or_create(
             username=validated_data['username'],
             email=validated_data['email']
         )
