@@ -1,15 +1,24 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from api.validators import (validate_username_chars, validate_username_not_me,
-                            validate_year)
-from reviews.constants import (CONFIRMATION_CODE_LIMIT, EMAIL_FIELD_LIMIT,
-                               NAME_FIELD_LIMIT, ROLE_FIELD_LIMIT,
-                               SYMBOL_LIMIT, USERNAME_FIELD_LIMIT)
+from api.validators import (
+    validate_username_chars,
+    validate_username_not_me,
+    validate_year
+)
+from reviews.constants import (
+    CONFIRMATION_CODE_LIMIT,
+    EMAIL_FIELD_LIMIT,
+    NAME_FIELD_LIMIT,
+    ROLE_FIELD_LIMIT,
+    SYMBOL_LIMIT,
+    USERNAME_FIELD_LIMIT
+)
 
 
 class CategoryGenreBaseModel(models.Model):
     """Абстрактная модель с полями name и slug."""
+
     name = models.CharField(
         verbose_name='Название жанра',
         max_length=NAME_FIELD_LIMIT
@@ -28,6 +37,7 @@ class CategoryGenreBaseModel(models.Model):
 
 class ReviewCommentBaseModel(models.Model):
     """Абстрактная модель с полем pub_date."""
+
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True
