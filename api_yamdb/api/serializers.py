@@ -13,6 +13,14 @@ from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[
+            validate_username_not_me,
+            validate_username_lenght,
+            validate_username_chars
+        ]
+    )
+
     class Meta:
         model = User
         fields = (
@@ -23,26 +31,23 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'role'
         )
-    username = serializers.CharField(
-        validators=[
-            validate_username_not_me,
-            validate_username_lenght,
-            validate_username_chars
-        ]
-    )
 
     def update(self, instance, validated_data):
         request = self.context.get('request')
-        if request and not (request.user.is_admin or request.user.is_superuser):
+        if request and not (
+            request.user.is_admin or request.user.is_superuser
+        ):
             validated_data.pop('role', None)
         return super().update(instance, validated_data)
 
     def validate(self, data):
         if self.instance is None:
             username = data.get('username')
-            if username and User.objects.filter(username=username).exists():
+            if username and User.objects.filter(
+                username=username
+            ).exists():
                 raise serializers.ValidationError(
-                    {'username': 'Пользователь с таким username уже существует'}
+                    {'username': 'Пользователь с таким username уже есть'}
                 )
 
             email = data.get('email')
@@ -59,7 +64,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
 
     def create(self, validated_data):
-        user, created = User.objects.get_or_create(
+        user, _ = User.objects.get_or_create(
             username=validated_data['username'],
             email=validated_data['email']
         )
@@ -69,11 +74,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
         """Проверка: username не занят другим email и наоборот."""
         username = data.get('username')
         email = data.get('email')
-        if User.objects.filter(username=username).exclude(email=email).exists():
+        if User.objects.filter(
+            username=username
+        ).exclude(email=email).exists():
             raise serializers.ValidationError(
                 {'username': 'Это имя уже занято.'}
             )
-        if User.objects.filter(email=email).exclude(username=username).exists():
+        if User.objects.filter(
+            email=email
+        ).exclude(username=username).exists():
             raise serializers.ValidationError(
                 {'email': 'Этот email уже занят.'}
             )

@@ -4,10 +4,9 @@ from rest_framework import permissions
 class IsAdmin(permissions.BasePermission):
     """Доступ только для администраторов."""
 
+#  Если отсюда убрать проверку суперюзера то тесты сразу рухнут
     def has_permission(self, request, view):
-        return request.user.is_authenticated and (
-            request.user.is_admin or request.user.is_superuser
-        )
+        return request.user.is_authenticated and request.user.is_admin
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -19,8 +18,8 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         return (
             request.method in permissions.SAFE_METHODS
             or (
-                request.user.is_authenticated and
-                (request.user.is_admin or request.user.is_superuser)
+                request.user.is_authenticated
+                and (request.user.is_admin)
             )
         )
 
@@ -30,17 +29,10 @@ class IsAdminOrModeratorOrReadOnly(permissions.BasePermission):
     Модератор и администратор могут редактировать и удалять.
     """
 
-    def has_permission(self, request, view):
-        """Проверка ДО доступа к объекту."""
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user and request.user.is_authenticated
-
     def has_object_permission(self, request, view, obj):
         return (
             request.method in permissions.SAFE_METHODS
             or obj.author == request.user
             or request.user.is_moderator
             or request.user.is_admin
-            or request.user.is_superuser
         )

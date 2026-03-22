@@ -82,12 +82,6 @@ class User(AbstractUser):
         choices=ROLE_CHOICES,
         default=USER,
     )
-    confirmation_code = models.CharField(
-        'Код подтверждения',
-        max_length=CONFIRMATION_CODE_LIMIT,
-        blank=True,
-        null=True
-    )
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -99,7 +93,7 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == self.ADMIN
+        return self.role == self.ADMIN or self.is_superuser
 
     @property
     def is_moderator(self):
