@@ -3,17 +3,12 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-
-FORBIDDEN_USERNAME = 'me'
-USERNAME_CHARS = r'^[\w.@+-]+\Z'
-
-
-def doc(docstring):
-    """Декоратор для задания docstring динамически."""
-    def decorator(func):
-        func.__doc__ = docstring
-        return func
-    return decorator
+from .decorators import doc
+from reviews.constants import (
+    FORBIDDEN_USERNAME,
+    USERNAME_FIELD_LIMIT,
+    USERNAME_CHARS
+)
 
 
 @doc(f"Запрещает использовать '{FORBIDDEN_USERNAME}' как username.")
@@ -26,7 +21,7 @@ def validate_username_not_me(value):
 
 def validate_username_lenght(value):
     """Проверяет что длина username не больше 150"""
-    if len(value) > 150:
+    if len(value) > USERNAME_FIELD_LIMIT:
         raise ValidationError(
             'Имя пользователя не может быть длиннее 150 символов.'
         )

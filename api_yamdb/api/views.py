@@ -11,7 +11,11 @@ from rest_framework.pagination import (
     LimitOffsetPagination,
     PageNumberPagination
 )
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
@@ -33,6 +37,8 @@ from .serializers import (
     UserCreateSerializer,
     UserSerializer
 )
+from reviews.models import Category, Genre, Review, Title
+
 
 User = get_user_model()
 
@@ -47,7 +53,7 @@ def signup(request):
     """Регистрация нового пользователя."""
     username = request.data.get('username')
     email = request.data.get('email')
-
+# Если удаляем это как просит Игорь то тесты руинятся сразу + 2 ошибки
     existing_user = User.objects.filter(
         username=username, email=email
     ).first()
@@ -110,15 +116,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=False,
-        methods=['get', 'patch', 'delete'],
+        methods=['get', 'patch',],
         url_path='me',
         permission_classes=[IsAuthenticated]
     )
     def me(self, request):
         """Свой профиль."""
-
-        if request.method == 'DELETE':
-            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         user = request.user
 
@@ -199,7 +202,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     serializer_class = ReviewSerializer
-    permission_classes = [IsAdminOrModeratorOrReadOnly]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+        IsAdminOrModeratorOrReadOnly
+    ]
 
     def get_title(self):
         """Метод для получения произведения."""
@@ -222,12 +228,20 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
     serializer_class = CommentSerializer
-    permission_classes = [IsAdminOrModeratorOrReadOnly]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+        IsAdminOrModeratorOrReadOnly
+    ]
 
     def get_review(self):
-        """Получение отзыва по ID."""
+        """Получение отзыва по ID с проверкой принадлежности произведению."""
         review_id = self.kwargs.get('review_id')
-        return get_object_or_404(Review, id=review_id)
+        title_id = self.kwargs.get('title_id')
+        return get_object_or_404(
+            Review,
+            id=review_id,
+            title_id=title_id
+        )
 
     def get_queryset(self):
         """Получение всех комментариев для конкретного отзыва."""

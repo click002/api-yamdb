@@ -3,16 +3,24 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers
 
-from reviews.constants import MAX_SCORE_REVIEW, MIN_SCORE_REVIEW
-from reviews.models import Category, Comment, Genre, Review, Title, User
 from .validators import (
     validate_username_chars,
     validate_username_lenght,
     validate_username_not_me
 )
+from reviews.constants import MAX_SCORE_REVIEW, MIN_SCORE_REVIEW
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        validators=[
+            validate_username_not_me,
+            validate_username_lenght,
+            validate_username_chars
+        ]
+    )
+
     class Meta:
         model = User
         fields = (
@@ -23,13 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'role'
         )
-    username = serializers.CharField(
-        validators=[
-            validate_username_not_me,
-            validate_username_lenght,
-            validate_username_chars
-        ]
-    )
 
     def update(self, instance, validated_data):
         request = self.context.get('request')
@@ -63,7 +64,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
 
     def create(self, validated_data):
-        user, created = User.objects.get_or_create(
+        user, _ = User.objects.get_or_create(
             username=validated_data['username'],
             email=validated_data['email']
         )
@@ -189,9 +190,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """Проверяем, что пользователь не оставил повторный отзыв."""
         request = self.context.get('request')
-
-        if not request or not request.user.is_authenticated:
-            return data
 
         if request.method == 'POST':
             title_id = self.context.get('view').kwargs.get('title_id')
