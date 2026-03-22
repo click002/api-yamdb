@@ -191,9 +191,6 @@ class ReviewSerializer(serializers.ModelSerializer):
         """Проверяем, что пользователь не оставил повторный отзыв."""
         request = self.context.get('request')
 
-        if not request or not request.user.is_authenticated:
-            return data
-
         if request.method == 'POST':
             title_id = self.context.get('view').kwargs.get('title_id')
             author = request.user
