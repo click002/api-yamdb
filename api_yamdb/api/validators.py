@@ -4,9 +4,11 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from .decorators import doc
-from reviews.constants import FORBIDDEN_USERNAME, USERNAME_FIELD_LIMIT
-
-USERNAME_CHARS = r'^[\w.@+-]+\Z'
+from reviews.constants import (
+    FORBIDDEN_USERNAME,
+    USERNAME_FIELD_LIMIT,
+    USERNAME_CHARS
+)
 
 
 @doc(f"Запрещает использовать '{FORBIDDEN_USERNAME}' как username.")

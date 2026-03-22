@@ -7,7 +7,7 @@ from .models import Category, Comment, Genre, Review, Title, User
 
 @admin.register(User)
 class UserWithRoleAdmin(UserAdmin):
-    list_display = ('username', 'email', 'role', 'bio', 'confirmation_code')
+    list_display = ('username', 'email', 'role', 'bio')
     list_filter = ('role',)
     search_fields = ('username', 'email')
 
