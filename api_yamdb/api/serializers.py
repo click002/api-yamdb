@@ -2,19 +2,19 @@ from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers
-from reviews.constants import (
-    EMAIL_FIELD_LIMIT,
-    FORBIDDEN_USERNAME,
-    MAX_SCORE_REVIEW, MIN_SCORE_REVIEW,
-    USERNAME_FIELD_LIMIT
-)
-from reviews.models import Category, Comment, Genre, Review, Title, User
 
 from .validators import (
     validate_username_chars,
     validate_username_lenght,
     validate_username_not_me
 )
+from reviews.constants import (
+    EMAIL_FIELD_LIMIT,
+    MAX_SCORE_REVIEW,
+    MIN_SCORE_REVIEW,
+    USERNAME_FIELD_LIMIT
+)
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -78,11 +78,6 @@ class UserCreateSerializer(serializers.Serializer):
         """Проверка: username не занят другим email и наоборот."""
         username = data.get('username')
         email = data.get('email')
-
-        if username == FORBIDDEN_USERNAME:
-            raise serializers.ValidationError(
-                {'username': 'Недопустимое имя пользователя'}
-            )
 
         if User.objects.filter(
             username=username
