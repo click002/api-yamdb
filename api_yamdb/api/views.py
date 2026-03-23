@@ -42,36 +42,11 @@ from reviews.models import Category, Genre, Review, Title
 
 User = get_user_model()
 
-# pytest проходит, а постман падает сразу при запуске на уровне токенов,
-# возможно неправильно вставляем его,
-# но по другому не знаем как((
-
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def signup(request):
     """Регистрация нового пользователя."""
-    username = request.data.get('username')
-    email = request.data.get('email')
-# Если удаляем это как просит Игорь то тесты руинятся сразу + 2 ошибки
-    existing_user = User.objects.filter(
-        username=username, email=email
-    ).first()
-
-    if existing_user:
-        confirmation_code = default_token_generator.make_token(existing_user)
-        send_mail(
-            'Код подтверждения для YaMDb',
-            f'Ваш код подтверждения: {confirmation_code}',
-            settings.DEFAULT_FROM_EMAIL,
-            [existing_user.email],
-            fail_silently=False,
-        )
-        return Response(
-            {'username': username, 'email': email},
-            status=status.HTTP_200_OK
-        )
-
     serializer = UserCreateSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()

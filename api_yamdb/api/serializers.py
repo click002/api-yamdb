@@ -2,14 +2,19 @@ from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import serializers
+from reviews.constants import (
+    EMAIL_FIELD_LIMIT,
+    FORBIDDEN_USERNAME,
+    MAX_SCORE_REVIEW, MIN_SCORE_REVIEW,
+    USERNAME_FIELD_LIMIT
+)
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 from .validators import (
     validate_username_chars,
     validate_username_lenght,
     validate_username_not_me
 )
-from reviews.constants import MAX_SCORE_REVIEW, MIN_SCORE_REVIEW
-from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -58,22 +63,27 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
 
-class UserCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('username', 'email')
-
-    def create(self, validated_data):
-        user, _ = User.objects.get_or_create(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        return user
+class UserCreateSerializer(serializers.Serializer):
+    username = serializers.CharField(
+        max_length=USERNAME_FIELD_LIMIT,
+        validators=[
+            validate_username_not_me,
+            validate_username_lenght,
+            validate_username_chars
+        ]
+    )
+    email = serializers.EmailField(max_length=EMAIL_FIELD_LIMIT)
 
     def validate(self, data):
         """Проверка: username не занят другим email и наоборот."""
         username = data.get('username')
         email = data.get('email')
+
+        if username == FORBIDDEN_USERNAME:
+            raise serializers.ValidationError(
+                {'username': 'Недопустимое имя пользователя'}
+            )
+
         if User.objects.filter(
             username=username
         ).exclude(email=email).exists():
@@ -87,6 +97,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 {'email': 'Этот email уже занят.'}
             )
         return data
+
+    def create(self, validated_data):
+        user, _ = User.objects.get_or_create(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        return user
 
 
 class GenreSerializer(serializers.ModelSerializer):
