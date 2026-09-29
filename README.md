@@ -1,4 +1,4 @@
-# Yamdb API
+# Yamdb API (team project)
 
 
 ### Project Description
